@@ -213,3 +213,13 @@ a.header { display: block; font-weight: 700 }
 
 .no_margin_right { margin-right: 0 }
 .last_box { margin-bottom: 0; background: none }
+
+#login_buttons {
+    float: right;
+    margin-top: 45px;
+}
+
+#login_buttons ul {
+    list-style: none;
+    background: none;
+}
