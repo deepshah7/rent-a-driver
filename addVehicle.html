@@ -1,0 +1,34 @@
+<template name="addVehicle">
+    <h5>Add new Vehicle</h5>
+    <div class="clear h20"></div>
+    <div id="contact_form">
+        <form method="post" name="vehicleInformation" action="#">
+
+            {{#if error}}
+            <div class="alert alert-error">{{error}}</div>
+            {{/if}}
+            <div class="clear h20"></div>
+            <div class="col one_third">
+                <label for="brand">* Brand:</label> <input type="text" id="brand" name="brand" class="brand required input_field" />
+                <div class="cleaner h10"></div>
+
+                <label for="model">* Model:</label> <input type="text" id="model" name="model" class="model required input_field" />
+                <div class="cleaner h10"></div>
+
+                <label for="regNumber">* Registration Number:</label> <input type="text" name="regNumber" id="regNumber" class="regNumber input_field" />
+                <div class="cleaner h10"></div>
+            </div>
+
+            <div class="col two-third no_margin_right">
+                <label for="comments">Comments:</label> <textarea id="text" name="comments" rows="0" cols="0" class="comments" id="comments"></textarea>
+                <div class="cleaner h10"></div>
+            </div>
+
+            <div class="cleaner h20"></div>
+
+            <input type="button" value="Add" id="submit" name="add" class="submit_btn float_l add" />
+
+        </form>
+    </div>
+    <div class="clear h40"></div>
+</template>

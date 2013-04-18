@@ -9,10 +9,16 @@
             </div>
             <div id="templatemo_menu" class="ddsmoothmenu">
                 <ul>
-                    <li><a href="index.html" class="selected">Home</a></li>
+                    {{#each menuItems}}
+                        {{> menu_item}}
+                    {{/each}}
                 </ul>
                 <br style="clear: left" />
             </div>
         </div>
     </div>
+</template>
+
+<template name="menu_item">
+    <li><a href="{{url}}" class="{{selected}} {{cssClass}}">{{text}}</a></li>
 </template>
