@@ -2,80 +2,11 @@
     <title>Rent A Driver</title>
     <meta name="keywords" content="rent-a-driver" />
     <meta name="description" content="Rent A Driver" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-
-<div id="templatemo_header_wrapper">
-    <div id="templatemo_header" class="wrapper">
-        <div id="site_title"><a href="http://www.templatemo.com">Free CSS Templates</a></div>
-        <div id="login_buttons">
-            <ul>
-                <li><a href="#">{{loginButtons align="right"}}</a></li>
-            </ul>
-        </div>
-        <div id="templatemo_menu" class="ddsmoothmenu">
-            <ul>
-                <li><a href="index.html" class="selected">Home</a></li>
-            </ul>
-            <br style="clear: left" />
-        </div>
-    </div>
-</div>
-<div id="templatemo_main" class="wrapper">
-    <h2>Welcome To Rent A Driver</h2>
-    <p>This application will let you rent the driver</p>
-    <div class="clear h40"></div>
-
-    <div id="contact_form">
-        <form method="post" name="contact" action="#">
-
-            <div class="col one_third">
-                <label for="author">Name:</label> <input type="text" id="author" name="author" class="required input_field" />
-                <div class="cleaner h10"></div>
-
-                <label for="email">Email:</label> <input type="text" id="email" name="email" class="validate-email required input_field" />
-                <div class="cleaner h10"></div>
-
-                <label for="subject">Subject:</label> <input type="text" name="subject" id="subject" class="input_field" />
-                <div class="cleaner h10"></div>
-            </div>
-
-            <div class="col two-third no_margin_right">
-                <label for="text">Message:</label> <textarea id="text" name="text" rows="0" cols="0" class="required"></textarea>
-                <div class="cleaner h10"></div>
-            </div>
-
-            <div class="cleaner h20"></div>
-
-            <input type="submit" value="Send" id="submit" name="submit" class="submit_btn float_l" />
-
-        </form>
-    </div>
-    <div class="clear h40"></div>
-</div>
-
-<div id="templatemo_bottom_wrapper">
-    <div id="templatemo_bottom" class="wrapper">
-
-        <div class="col one_fourth">
-            <h4>About</h4>
-            <p>This site has been developed and maintained by <a href="http://www.gitshah.com">Git Shah</a></p>
-        </div>
-
-        <div class="col one_fourth no_margin_right">
-            <h4>Activity</h4>
-            <ul class="no_bullet">
-                <li><a href="#">@deepshah7</a></li>
-            </ul>
-        </div>
-
-        <div class="clear"></div>
-    </div>
-</div>
-
-<div id="templatemo_footer_wrapper">
-    <div id="templatemo_footer" class="wrapper">
-        Copyright © 2013 <a href="#">Rent A Driver</a> | Designed by <a href="http://www.templatemo.com" target="_parent">Free CSS Templates</a>
-    </div>
-</div>
+    {{> header}}
+    {{> content}}
+    {{> info}}
+    {{> footer}}
 </body>
