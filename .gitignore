@@ -4,3 +4,4 @@ public/gen
 .idea/*
 .bin/
 bin/
+*.iml
