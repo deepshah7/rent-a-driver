@@ -1,7 +1,12 @@
 var Operations = {
-    None: "none",
+    Home: "home",
+    Vehicle: "vehicle",
+    Driver: "driver",
+
     AddVehicle: "addVehicle",
-    ListVehicles: "listVehicles"
+    ListVehicles: "listVehicles",
+    AddDriver: "addDriver",
+    ListDrivers: "listDrivers"
 };
 
 var Constants = {
@@ -18,6 +23,28 @@ var isAdminUser = function() {
     return user && user.emails && user.emails.length > 0 && user.emails[0].address === "admin@rentadriver.com";
 }
 
+var CreateMenuItem = function(url, text, cssClass, operation, subMenus) {
+    return {
+        url: url,
+        text: text,
+        cssClass: cssClass,
+        operation: operation,
+        subMenus: subMenus || [],
+        hasSubMenus: subMenus && subMenus.length > 0
+    }
+}
+
+var addAdminMenuItems = function(items) {
+    items.push(CreateMenuItem("#", "Vehicle", "vehicle", Operations.Vehicle, [
+        CreateMenuItem("#vehicles_add.html", "Add Vehicle", "addVehicle", Operations.AddVehicle),
+        CreateMenuItem("#vehicles_list.html", "List Vehicles", "listVehicle", Operations.ListVehicles)
+    ]));
+    items.push(CreateMenuItem("#", "Driver", "driver", Operations.Driver, [
+        CreateMenuItem("#drivers_add.html", "Add Driver", "addDriver", Operations.AddDriver),
+        CreateMenuItem("#drivers_list.html", "List Drivers", "listDriver", Operations.ListDriver)
+    ]));
+}
+
 Template.content.isAdmin = function () {
     return isAdminUser();
 };
@@ -32,10 +59,9 @@ Template.header.isAdmin = function () {
 
 Template.header.menuItems = function() {
     var items = [];
-    items.push({url: "#", text: "Home", cssClass: "home", operation: Operations.None });
+    items.push({url: "#", text: "Home", cssClass: "home", operation: Operations.Home });
     if(isAdminUser()) {
-        items.push({url: "#vehicles_add.html", text: "Add Vehicle", cssClass: "addVehicle", operation: Operations.AddVehicle });
-        items.push({url: "#vehicles_list.html", text: "List Vehicles", cssClass: "listVehicles", operation: Operations.ListVehicles });
+        addAdminMenuItems(items);
     }
 
     _.each(items, function(item) {
@@ -80,6 +106,6 @@ Template.addVehicle.events({
 });
 
 Meteor.startup(function () {
-    Session.setDefault(Constants.Operation, Operations.None);
+    Session.setDefault(Constants.Operation, Operations.Home);
 });
 

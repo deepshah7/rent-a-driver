@@ -20,5 +20,17 @@
 </template>
 
 <template name="menu_item">
+    <li><a href="{{url}}" class="{{selected}} {{cssClass}}">{{text}}</a>
+    {{#if hasSubMenus}}
+        <ul>
+            {{#each subMenus}}
+                {{> sub_menu_item}}
+            {{/each}}
+        </ul>
+    {{/if}}
+    </li>
+</template>
+
+<template name="sub_menu_item">
     <li><a href="{{url}}" class="{{selected}} {{cssClass}}">{{text}}</a></li>
 </template>
