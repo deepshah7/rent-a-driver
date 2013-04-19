@@ -251,3 +251,7 @@ a.header { display: block; font-weight: 700 }
     margin-left: 10px;
     font-size: 100%;
 }
+
+#vehicle-list .vehicle .vehicle-text:hover {
+    cursor: pointer;
+}

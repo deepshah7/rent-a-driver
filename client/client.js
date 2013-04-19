@@ -4,6 +4,7 @@ var Operations = {
     Driver: "driver",
 
     AddVehicle: "addVehicle",
+    EditVehicle: "editVehicle",
     ListVehicles: "listVehicles",
     AddDriver: "addDriver",
     ListDrivers: "listDrivers"
@@ -13,8 +14,10 @@ var Constants = {
     Operation: "operation",
     ParentOperation: "ParentOperation",
     Error: {
-        AddVehicleError: "addVehicleError"
-    }
+        AddVehicleError: "addVehicleError",
+        EditVehicleError: "editVehicleError"
+    },
+    EditVehicle: "editVehicle"
 };
 
 Meteor.subscribe("vehicles");
@@ -70,6 +73,10 @@ Template.content.isAdmin = function () {
 
 Template.content.isAddVehicle = function() {
     return Session.equals(Constants.Operation, Operations.AddVehicle);
+};
+
+Template.content.isEditVehicle = function() {
+    return Session.equals(Constants.Operation, Operations.EditVehicle);
 };
 
 Template.content.isListVehicles = function() {
@@ -131,6 +138,39 @@ Template.addVehicle.events({
    }
 });
 
+Template.editVehicle.error = function() {
+  return Session.get(Constants.Error.EditVehicleError);
+};
+
+Template.editVehicle.vehicle = function() {
+  return Session.get(Constants.EditVehicle);
+};
+
+Template.editVehicle.events({
+   'click .update': function(event, template) {
+        var vehicle = {};
+        vehicle.brand = template.find(".brand").value;
+        vehicle.model = template.find(".model").value;
+        vehicle.regNumber = template.find(".regNumber").value;
+        vehicle.comments = template.find(".comments").value;
+
+        if(vehicle.brand.length && vehicle.model.length && vehicle.regNumber.length) {
+            Meteor.call('editVehicle', vehicle, function(error, vehicle) {
+                if(!error) {
+                    Session.set(Constants.Operation, Operations.ListVehicles);
+                    Session.set(Constants.ParentOperation, Operations.Vehicles);
+                    Session.set(Constants.Error.AddVehicleError, null);
+                }
+            });
+        } else {
+            Session.set(Constants.Error.AddVehicleError, "Please fill in all the required (*) fields");
+        }
+   },
+   'change input': function(event, template) {
+        Session.set(Constants.Error.EditVehicleError, null);
+   }
+});
+
 Template.listVehicles.hasVehicles = function() {
     return Vehicles.find().count() > 0;
 };
@@ -138,6 +178,15 @@ Template.listVehicles.hasVehicles = function() {
 Template.listVehicles.vehicles = function() {
     return Vehicles.find().fetch();
 };
+
+Template.listVehicles.events({
+   'click .vehicle-text': function(event, template) {
+        Session.set(Constants.Operation, Operations.EditVehicle);
+        Session.set(Constants.ParentOperation, Operations.Vehicles);
+        Session.set(Constants.EditVehicle, this);
+
+   }
+});
 
 Meteor.startup(function () {
     Session.setDefault(Constants.Operation, Operations.Home);
