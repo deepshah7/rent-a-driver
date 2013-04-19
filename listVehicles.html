@@ -1,0 +1,21 @@
+<template name="listVehicles">
+    {{#if hasVehicles}}
+    <div id="vehicles-view">
+        <ul id="vehicle-list">
+            {{#each vehicles}}
+                {{> vehicle}}
+            {{/each}}
+        </ul>
+    </div>
+    {{else}}
+        <div class="alert alert-error">No Vehicles configured in the system yet!</div>
+    {{/if}}
+</template>
+
+<template name="vehicle">
+    <li class="vehicle">
+        <div class="display">
+            <div class="vehicle-text">{{brand}} - {{model}} - {{regNumber}}</div>
+        </div>
+    </li>
+</template>

@@ -72,6 +72,10 @@ Template.content.isAddVehicle = function() {
     return Session.equals(Constants.Operation, Operations.AddVehicle);
 };
 
+Template.content.isListVehicles = function() {
+    return Session.equals(Constants.Operation, Operations.ListVehicles);
+};
+
 Template.header.isAdmin = function () {
     return isAdminUser();
 };
@@ -126,6 +130,14 @@ Template.addVehicle.events({
         Session.set(Constants.Error.AddVehicleError, null);
    }
 });
+
+Template.listVehicles.hasVehicles = function() {
+    return Vehicles.find().count() > 0;
+};
+
+Template.listVehicles.vehicles = function() {
+    return Vehicles.find().fetch();
+};
 
 Meteor.startup(function () {
     Session.setDefault(Constants.Operation, Operations.Home);

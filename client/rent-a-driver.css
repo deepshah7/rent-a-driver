@@ -227,3 +227,27 @@ a.header { display: block; font-weight: 700 }
 .alert-error {
     color: red;
 }
+
+
+#vehicle-list .vehicle {
+    display: block;
+    height: 50px;
+    position: relative;
+    overflow: hidden;
+    border-top: 1px solid #ccc;
+}
+
+#vehicle-list .vehicle .display, #vehicle-list .vehicle .edit {
+    margin-left: 10px;
+    height: 100%;
+    width: auto;
+    float: left;
+    padding-top: 18px;
+    line-height: 1;
+}
+
+#vehicle-list .vehicle .vehicle-text {
+    float: left;
+    margin-left: 10px;
+    font-size: 100%;
+}
