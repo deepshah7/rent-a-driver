@@ -11,6 +11,7 @@ var Operations = {
 
 var Constants = {
     Operation: "operation",
+    ParentOperation: "ParentOperation",
     Error: {
         AddVehicleError: "addVehicleError"
     }
@@ -21,28 +22,46 @@ Meteor.subscribe("vehicles");
 var isAdminUser = function() {
     var user = Meteor.user();
     return user && user.emails && user.emails.length > 0 && user.emails[0].address === "admin@rentadriver.com";
-}
+};
 
-var CreateMenuItem = function(url, text, cssClass, operation, subMenus) {
+var initializeMenu = function() {
+    setTimeout(function() {
+        ddsmoothmenu.init({
+        mainmenuid: "templatemo_menu", //menu DIV id
+        orientation: 'h', //Horizontal or vertical menu: Set to "h" or "v"
+        classname: 'ddsmoothmenu', //class added to menu's outer DIV
+        //customtheme: ["#1c5a80", "#18374a"],
+        contentsource: "markup" //"markup" or ["container_id", "path_to_menu_file"]
+        })
+    }, 1000);
+
+};
+
+var CreateMenuItem = function(url, text, cssClass, operation, parentOperation, subMenus) {
     return {
         url: url,
         text: text,
         cssClass: cssClass,
         operation: operation,
+        parentOperation: parentOperation,
         subMenus: subMenus || [],
         hasSubMenus: subMenus && subMenus.length > 0
     }
-}
+};
 
 var addAdminMenuItems = function(items) {
-    items.push(CreateMenuItem("#", "Vehicle", "vehicle", Operations.Vehicle, [
-        CreateMenuItem("#vehicles_add.html", "Add Vehicle", "addVehicle", Operations.AddVehicle),
-        CreateMenuItem("#vehicles_list.html", "List Vehicles", "listVehicle", Operations.ListVehicles)
+    items.push(CreateMenuItem("#", "Vehicle", "vehicle", Operations.Vehicle, null, [
+        CreateMenuItem("#vehicles_add.html", "Add Vehicle", "addVehicle", Operations.AddVehicle, Operations.Vehicle),
+        CreateMenuItem("#vehicles_list.html", "List Vehicles", "listVehicle", Operations.ListVehicles, Operations.Vehicle)
     ]));
-    items.push(CreateMenuItem("#", "Driver", "driver", Operations.Driver, [
-        CreateMenuItem("#drivers_add.html", "Add Driver", "addDriver", Operations.AddDriver),
-        CreateMenuItem("#drivers_list.html", "List Drivers", "listDriver", Operations.ListDriver)
+    items.push(CreateMenuItem("#", "Driver", "driver", Operations.Driver, null, [
+        CreateMenuItem("#drivers_add.html", "Add Driver", "addDriver", Operations.AddDriver, Operations.Driver),
+        CreateMenuItem("#drivers_list.html", "List Drivers", "listDriver", Operations.ListDriver, Operations.Driver)
     ]));
+};
+
+var isSelectedItem = function(item) {
+    return Session.equals(Constants.Operation, item.operation) || Session.equals(Constants.ParentOperation, item.operation);
 }
 
 Template.content.isAdmin = function () {
@@ -65,7 +84,7 @@ Template.header.menuItems = function() {
     }
 
     _.each(items, function(item) {
-       item.selected = Session.equals(Constants.Operation, item.operation)? "selected" : "";
+       item.selected = isSelectedItem(item) ? "selected" : "";
     });
 
     return items;
@@ -74,6 +93,8 @@ Template.header.menuItems = function() {
 Template.menu_item.events({
     'click a': function(event, template) {
         Session.set(Constants.Operation, this.operation);
+        Session.set(Constants.ParentOperation, this.parentOperation);
+        initializeMenu();
     }
 })
 
@@ -93,6 +114,7 @@ Template.addVehicle.events({
             Meteor.call('addVehicle', vehicle, function(error, vehicle) {
                 if(!error) {
                     Session.set(Constants.Operation, Operations.ListVehicles);
+                    Session.set(Constants.ParentOperation, Operations.Vehicles);
                     Session.set(Constants.Error.AddVehicleError, null);
                 }
             });
@@ -107,5 +129,5 @@ Template.addVehicle.events({
 
 Meteor.startup(function () {
     Session.setDefault(Constants.Operation, Operations.Home);
+    initializeMenu();
 });
-
