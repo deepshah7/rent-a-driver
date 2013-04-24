@@ -30,7 +30,8 @@ Meteor.methods({
       co_owner: [this.userId],
       regNumber: vehicle.regNumber,
       brand: vehicle.brand,
-      model: vehicle.model
+      model: vehicle.model,
+      comments: vehicle.comments
     });
   }
 });
