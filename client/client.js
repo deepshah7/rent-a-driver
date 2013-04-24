@@ -1,18 +1,19 @@
 var Operations = {
-    Home: "home",
-    Vehicle: "vehicle",
-    Driver: "driver",
+    Home: {name: "home", parent: "home" },
+    Vehicle: {name: "vehicle", parent: "vehicle" },
+    Driver: {name: "driver", parent: "driver" },
 
-    AddVehicle: "addVehicle",
-    EditVehicle: "editVehicle",
-    ListVehicles: "listVehicles",
-    AddDriver: "addDriver",
-    ListDrivers: "listDrivers"
+    AddVehicle: {name: "addVehicle", parent: "vehicle" },
+    EditVehicle: {name: "editVehicle", parent: "vehicle" },
+    ListVehicles: {name: "listVehicles", parent: "vehicle" },
+    AddDriver: {name: "addDriver", parent: "driver" },
+    EditDriver: {name: "editDriver", parent: "driver" },
+    ListDrivers: {name: "listDrivers", parent: "driver" }
 };
 
 var Constants = {
     Operation: "operation",
-    ParentOperation: "ParentOperation",
+    ParentOperation: "parentOperation",
     Error: {
         AddVehicleError: "addVehicleError",
         EditVehicleError: "editVehicleError"
@@ -21,6 +22,38 @@ var Constants = {
 };
 
 Meteor.subscribe("vehicles");
+var allMenuItems = {};
+
+var CreateMenuItem = function(url, text, cssClass, operation, subMenus) {
+    return {
+        url: url,
+        text: text,
+        cssClass: cssClass,
+        operation: operation,
+        subMenus: subMenus || [],
+        hasSubMenus: subMenus && subMenus.length > 0
+    }
+};
+
+var initializeAllMenuItems = function() {
+    allMenuItems.home = CreateMenuItem("/", "Home", "home", Operations.Home);
+    allMenuItems.addVehicle = CreateMenuItem("/vehicles/add", "Add Vehicle", "addVehicle", Operations.AddVehicle);
+    allMenuItems.listVehicles = CreateMenuItem("/vehicles", "List Vehicles", "listVehicle", Operations.ListVehicles);
+    allMenuItems.vehicles = CreateMenuItem("/vehicles", "Vehicle", "vehicle", Operations.Vehicle, [
+        allMenuItems.addVehicle,
+        allMenuItems.listVehicles
+    ]);
+
+    allMenuItems.addDriver = CreateMenuItem("/drivers/add", "Add Driver", "addDriver", Operations.AddDriver);
+    allMenuItems.listDrivers = CreateMenuItem("/drivers", "List Drivers", "listDriver", Operations.ListDrivers);
+    allMenuItems.drivers = CreateMenuItem("/drivers", "Driver", "driver", Operations.Driver, [
+        allMenuItems.addDriver, allMenuItems.listDrivers
+    ])
+    allMenuItems.editVehicle = CreateMenuItem("/vehicles/edit/", "Edit Vehicle", "editVehicle", Operations.EditVehicle);
+    allMenuItems.editDriver = CreateMenuItem("/drivers/edit/", "Edit Driver", "editDriver", Operations.EditDriver);
+};
+
+initializeAllMenuItems();
 
 var isAdminUser = function() {
     var user = Meteor.user();
@@ -37,34 +70,20 @@ var initializeMenu = function() {
         contentsource: "markup" //"markup" or ["container_id", "path_to_menu_file"]
         })
     }, 1000);
-
 };
 
-var CreateMenuItem = function(url, text, cssClass, operation, parentOperation, subMenus) {
-    return {
-        url: url,
-        text: text,
-        cssClass: cssClass,
-        operation: operation,
-        parentOperation: parentOperation,
-        subMenus: subMenus || [],
-        hasSubMenus: subMenus && subMenus.length > 0
-    }
+
+var isOperationMatching = function(operation) {
+    return Session.equals(Constants.Operation, operation.name);
 };
 
 var addAdminMenuItems = function(items) {
-    items.push(CreateMenuItem("#", "Vehicle", "vehicle", Operations.Vehicle, null, [
-        CreateMenuItem("#vehicles_add.html", "Add Vehicle", "addVehicle", Operations.AddVehicle, Operations.Vehicle),
-        CreateMenuItem("#vehicles_list.html", "List Vehicles", "listVehicle", Operations.ListVehicles, Operations.Vehicle)
-    ]));
-    items.push(CreateMenuItem("#", "Driver", "driver", Operations.Driver, null, [
-        CreateMenuItem("#drivers_add.html", "Add Driver", "addDriver", Operations.AddDriver, Operations.Driver),
-        CreateMenuItem("#drivers_list.html", "List Drivers", "listDriver", Operations.ListDriver, Operations.Driver)
-    ]));
+    items.push(allMenuItems.vehicles);
+    items.push(allMenuItems.drivers);
 };
 
 var isSelectedItem = function(item) {
-    return Session.equals(Constants.Operation, item.operation) || Session.equals(Constants.ParentOperation, item.operation);
+    return Session.equals(Constants.ParentOperation, item.operation.parent);
 }
 
 Template.content.isAdmin = function () {
@@ -72,15 +91,27 @@ Template.content.isAdmin = function () {
 };
 
 Template.content.isAddVehicle = function() {
-    return Session.equals(Constants.Operation, Operations.AddVehicle);
+    return isOperationMatching(Operations.AddVehicle);
 };
 
 Template.content.isEditVehicle = function() {
-    return Session.equals(Constants.Operation, Operations.EditVehicle);
+    return isOperationMatching(Operations.EditVehicle);
 };
 
 Template.content.isListVehicles = function() {
-    return Session.equals(Constants.Operation, Operations.ListVehicles);
+    return isOperationMatching(Operations.ListVehicles);
+};
+
+Template.content.isAddDriver = function() {
+    return isOperationMatching(Operations.AddDriver);
+};
+
+Template.content.isEditDriver = function() {
+    return isOperationMatching(Operations.EditDriver);
+};
+
+Template.content.isListDrivers = function() {
+    return isOperationMatching(Operations.ListDrivers);
 };
 
 Template.header.isAdmin = function () {
@@ -89,7 +120,7 @@ Template.header.isAdmin = function () {
 
 Template.header.menuItems = function() {
     var items = [];
-    items.push({url: "#", text: "Home", cssClass: "home", operation: Operations.Home });
+    items.push(allMenuItems.home);
     if(isAdminUser()) {
         addAdminMenuItems(items);
     }
@@ -103,9 +134,8 @@ Template.header.menuItems = function() {
 
 Template.menu_item.events({
     'click a': function(event, template) {
-        Session.set(Constants.Operation, this.operation);
-        Session.set(Constants.ParentOperation, this.parentOperation);
-        initializeMenu();
+        app.navigateTo(this);
+        event.preventDefault();
     }
 })
 
@@ -124,8 +154,7 @@ Template.addVehicle.events({
         if(vehicle.brand.length && vehicle.model.length && vehicle.regNumber.length) {
             Meteor.call('addVehicle', vehicle, function(error, vehicle) {
                 if(!error) {
-                    Session.set(Constants.Operation, Operations.ListVehicles);
-                    Session.set(Constants.ParentOperation, Operations.Vehicles);
+                    app.navigateTo(allMenuItems.home);
                     Session.set(Constants.Error.AddVehicleError, null);
                 }
             });
@@ -157,8 +186,7 @@ Template.editVehicle.events({
         if(vehicle.brand.length && vehicle.model.length && vehicle.regNumber.length) {
             Meteor.call('editVehicle', vehicle, function(error, vehicle) {
                 if(!error) {
-                    Session.set(Constants.Operation, Operations.ListVehicles);
-                    Session.set(Constants.ParentOperation, Operations.Vehicles);
+                    app.navigateTo(allMenuItems.editVehicles);
                     Session.set(Constants.Error.AddVehicleError, null);
                 }
             });
@@ -181,14 +209,73 @@ Template.listVehicles.vehicles = function() {
 
 Template.listVehicles.events({
    'click .vehicle-text': function(event, template) {
-        Session.set(Constants.Operation, Operations.EditVehicle);
-        Session.set(Constants.ParentOperation, Operations.Vehicles);
+        app.navigateTo(allMenuItems.editVehicle, this._id);
         Session.set(Constants.EditVehicle, this);
-
    }
 });
 
+var Router = Backbone.Router.extend({
+    routes: {
+        "":                                     "main",
+        "vehicles/add":                          "addVehicle",
+        "vehicles/edit/:vehicleId":              "editVehicle",
+        "vehicles":                              "listVehicle",
+        "drivers/add":                           "addDriver",
+        "drivers/edit/:driverId":                "editDriver",
+        "drivers":                               "listDriver"
+    },
+
+    main: function() {
+        this.updateSessionVariables(Operations.Home);
+    },
+
+    addVehicle: function() {
+        this.updateSessionVariables(Operations.AddVehicle);
+    },
+
+    editVehicle: function(vehicleId) {
+        var vehicle = Vehicles.findOne({_id: vehicleId});
+        if(!vehicle) {
+            this.navigateTo(allMenuItems.listVehicles);
+            return;
+        }
+        this.updateSessionVariables(Operations.EditVehicle);
+        Session.set(Constants.EditVehicle, vehicle);
+    },
+
+    listVehicle: function() {
+        this.updateSessionVariables(Operations.ListVehicles);
+    },
+
+    addDriver: function() {
+        this.updateSessionVariables(Operations.AddDriver);
+    },
+
+    editDriver: function(driverId) {
+        this.updateSessionVariables(Operations.EditDriver);
+    },
+
+    listDriver: function() {
+        this.updateSessionVariables(Operations.ListDrivers);
+    },
+
+    navigateTo: function(menuItem, identifier) {
+        if(!menuItem) {
+            this.navigate("/", true);
+            return;
+        }
+        var appendUrl = identifier? identifier : "";
+        this.navigate(menuItem.url + appendUrl, true);
+    },
+
+    updateSessionVariables: function(operation) {
+        Session.set(Constants.Operation, operation.name);
+        Session.set(Constants.ParentOperation, operation.parent);
+        initializeMenu();
+    }
+});
+
+var app = new Router;
 Meteor.startup(function () {
-    Session.setDefault(Constants.Operation, Operations.Home);
-    initializeMenu();
+    Backbone.history.start({pushState: true});
 });
