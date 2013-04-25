@@ -21,6 +21,7 @@ var Router = Backbone.Router.extend({
     },
 
     addVehicle: function() {
+        Session.set(Constants.EditVehicle, null);
         this.updateSessionVariables(Operations.AddVehicle);
     },
 

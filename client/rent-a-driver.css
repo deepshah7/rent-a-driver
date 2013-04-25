@@ -252,6 +252,6 @@ a.header { display: block; font-weight: 700 }
     font-size: 100%;
 }
 
-#vehicle-list .vehicle .vehicle-text:hover {
+#vehicle-list .vehicle:hover {
     cursor: pointer;
 }

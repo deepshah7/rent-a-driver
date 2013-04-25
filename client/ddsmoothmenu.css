@@ -45,7 +45,7 @@
 .ddsmoothmenu ul li ul {
 	position: absolute;
 	width: 184px;
-	margin: 3px 0 0 10px;
+	margin: 0 0 0 10px;
 	display: none; /*collapse all sub menus to begin with*/
 	visibility: hidden;
 	background: #1f1d1d;

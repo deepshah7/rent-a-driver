@@ -27,25 +27,21 @@ Validator = {
 };
 
 Meteor.methods({
-  addVehicle: function (vehicle) {
+  saveVehicle: function (vehicle) {
       var error = Validator.validateVehicle(vehicle);
       if(error) throw error;
 
-      return Vehicles.insert({
-          owner: this.userId,
-          co_owner: [this.userId],
-          regNumber: vehicle.regNumber,
-          brand: vehicle.brand,
-          model: vehicle.model,
-          comments: vehicle.comments
-      });
-  },
-
-  editVehicle: function (vehicle) {
-      var error = Validator.validateVehicle(vehicle);
-      if(error) throw error;
-
-
+      if(!vehicle._id) {
+          return Vehicles.insert({
+              owner: this.userId,
+              co_owner: [this.userId],
+              regNumber: vehicle.regNumber,
+              brand: vehicle.brand,
+              model: vehicle.model,
+              comments: vehicle.comments
+          });
+          return;
+      }
       return Vehicles.update(vehicle._id, {$set: {
           regNumber: vehicle.regNumber,
           brand: vehicle.brand,
