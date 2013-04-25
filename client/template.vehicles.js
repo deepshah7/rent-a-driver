@@ -42,7 +42,6 @@ Template.addEditVehicle.events({
     },
     'change .brand': function(event, template) {
         Session.set(Constants.Vehicle.SelectedBrand, template.find(".brand").value);
-        Deps.flush();
     }
 });
 

@@ -1,6 +1,9 @@
 Meteor.subscribe("vehicles");
 Meteor.subscribe("brands");
-Meteor.subscribe("models");
+
+Deps.autorun(function() {
+    Meteor.subscribe('models', Session.get(Constants.Vehicle.SelectedBrand));
+});
 
 Helpers.initializeAllMenuItems();
 

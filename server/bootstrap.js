@@ -18,9 +18,8 @@ Meteor.startup(function () {
     for (var i = 0; i < data.length; i++) {
       var brand_id = Brands.insert({name: data[i].name});
       for (var j = 0; j < data[i].contents.length; j++) {
-        var info = data[i].contents[j];
         Models.insert({brand_id: brand_id,
-                      name: info[0]
+                      name: data[i].contents[j]
                     });
       }
     }
