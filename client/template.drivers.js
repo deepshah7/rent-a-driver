@@ -10,9 +10,18 @@ Template.addEditDriver.vehicles = function() {
     return Vehicles.find();
 };
 
+Template.addEditDriver.users = function() {
+    return Meteor.users.find();
+};
+
 Template.addEditDriver.isVehicleSelected = function() {
     var editDriver = Template.addEditDriver.driver();
     return  editDriver && this._id === editDriver.vehicle_id? "selected='selected'" : "";
+};
+
+Template.addEditDriver.isUserSelected = function() {
+    var editDriver = Template.addEditDriver.driver();
+    return  editDriver && this._id === editDriver.user_id? "selected='selected'" : "";
 };
 
 Template.addEditDriver.events({
@@ -25,10 +34,12 @@ Template.addEditDriver.events({
             number:  template.find(".licenseNumber").value,
             validTill:  template.find(".licenseValidTill").value
         };
+        driver.user_id = template.find(".user_id").value;
         driver.vehicle_id = template.find(".vehicle_id").value;
         driver.comments = template.find(".comments").value;
 
         if(driver.name.length
+            && driver.user_id.length
             && driver.panNumber.length
             && driver.license.number.length
             && driver.license.validTill.length

@@ -255,3 +255,34 @@ a.header { display: block; font-weight: 700 }
 #vehicle-list .vehicle:hover {
     cursor: pointer;
 }
+
+
+
+
+
+#driver-list .driver {
+    display: block;
+    height: 50px;
+    position: relative;
+    overflow: hidden;
+    border-top: 1px solid #ccc;
+}
+
+#driver-list .driver .display, #driver-list .driver .edit {
+    margin-left: 10px;
+    height: 100%;
+    width: auto;
+    float: left;
+    padding-top: 18px;
+    line-height: 1;
+}
+
+#driver-list .driver .driver-text {
+    float: left;
+    margin-left: 10px;
+    font-size: 100%;
+}
+
+#driver-list .driver:hover {
+    cursor: pointer;
+}

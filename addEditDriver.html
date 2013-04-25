@@ -10,6 +10,16 @@
             <div class="clear h20"></div>
             <div class="col one_third">
                 <input type="hidden" name="_id" class="_id" value="{{driver._id}}" />
+
+                <label for="user_id">* Driver:</label>
+                <select name="user_id" id="user_id" class="user_id required input_field">
+                    <option value="">Select</option>
+                    {{#each users}}
+                    <option value="{{_id}}" {{isUserSelected}}>{{_id}}</option>
+                    {{/each}}
+                </select>
+                <div class="cleaner h10"></div>
+
                 <label for="name">* Name:</label>
                 <input type="text" name="name" id="name" class="name input_field"  value="{{driver.name}}"/>
                 <div class="cleaner h10"></div>

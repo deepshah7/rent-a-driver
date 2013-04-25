@@ -54,6 +54,7 @@ Validator = {
     validateDriver: function(driver) {
         driver = driver || {};
         if (! (typeof driver.vehicle_id === "string" && driver.vehicle_id.length &&
+            typeof driver.user_id === "string" && driver.user_id.length &&
             typeof driver.name === "string" && driver.name.length &&
             typeof driver.panNumber === "string" && driver.panNumber.length &&
             typeof driver.license.number === "string" && driver.license.number.length &&
@@ -93,6 +94,7 @@ Meteor.methods({
 
       if(!driver._id) {
           return Drivers.insert({
+              user_id: driver.user_id,
               name: driver.name,
               panNumber: driver.panNumber,
               license: driver.license,
@@ -102,6 +104,7 @@ Meteor.methods({
           return;
       }
       return Drivers.update(driver._id, {$set: {
+          user_id: driver.user_id,
           name: driver.name,
           panNumber: driver.panNumber,
           license: driver.license,
