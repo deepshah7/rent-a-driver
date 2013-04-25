@@ -1,6 +1,32 @@
+Brands = new Meteor.Collection("brands");
+Models = new Meteor.Collection("models");
 Vehicles = new Meteor.Collection("vehicles");
 
 Vehicles.allow({
+  insert: function (userId, vehicle) {
+    return false;
+  },
+  update: function (userId, vehicle, fields, modifier) {
+    return false;
+  },
+  remove: function (userId, vehicle) {
+    return false;
+  }
+});
+
+Brands.allow({
+  insert: function (userId, vehicle) {
+    return false;
+  },
+  update: function (userId, vehicle, fields, modifier) {
+    return false;
+  },
+  remove: function (userId, vehicle) {
+    return false;
+  }
+});
+
+Models.allow({
   insert: function (userId, vehicle) {
     return false;
   },

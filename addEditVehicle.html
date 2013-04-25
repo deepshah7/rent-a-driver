@@ -10,10 +10,22 @@
             <div class="clear h20"></div>
             <div class="col one_third">
                 <input type="hidden" name="_id" class="_id" value="{{vehicle._id}}" />
-                <label for="brand">* Brand:</label> <input type="text" id="brand" name="brand" class="brand required input_field" value="{{vehicle.brand}}" />
+                <label for="brand">* Brand:</label>
+                    <select name="brand" id="brand" class="brand required input_field">
+                        <option value="">Select</option>
+                        {{#each brands}}
+                            <option value="{{_id}}">{{name}}</option>
+                        {{/each}}
+                    </select>
                 <div class="cleaner h10"></div>
 
-                <label for="model">* Model:</label> <input type="text" id="model" name="model" class="model required input_field" value="{{vehicle.model}}" />
+                <label for="model">* Model:</label>
+                <select name="model" id="model" class="model required input_field">
+                    <option value="">Select</option>
+                    {{#each models}}
+                    <option value="{{_id}}">{{name}}</option>
+                    {{/each}}
+                </select>
                 <div class="cleaner h10"></div>
 
                 <label for="regNumber">* Registration Number:</label> <input type="text" name="regNumber" id="regNumber" class="regNumber input_field"  value="{{vehicle.regNumber}}"/>

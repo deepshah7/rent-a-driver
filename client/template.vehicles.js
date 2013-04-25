@@ -6,6 +6,15 @@ Template.addEditVehicle.vehicle = function() {
     return Session.get(Constants.EditVehicle);
 };
 
+Template.addEditVehicle.brands = function() {
+    return Brands.find();
+};
+
+Template.addEditVehicle.models = function() {
+    return Models.find({brand_id: Session.get(Constants.Vehicle.SelectedBrand)});
+};
+
+
 Template.addEditVehicle.events({
     'click .save': function(event, template) {
         var vehicle = {};
@@ -28,8 +37,12 @@ Template.addEditVehicle.events({
         }
         Session.set(Constants.Error.AddEditVehicleError, "Please fill in all the required (*) fields");
     },
-    'change input': function(event, template) {
+    'change .input_field': function(event, template) {
         Session.set(Constants.Error.AddEditVehicleError, null);
+    },
+    'change .brand': function(event, template) {
+        Session.set(Constants.Vehicle.SelectedBrand, template.find(".brand").value);
+        Deps.flush();
     }
 });
 
