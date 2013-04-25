@@ -37,7 +37,6 @@ Template.addEditVehicle.events({
             Meteor.call('saveVehicle', vehicle, function(error, vehicle) {
                 if(!error) {
                     app.navigateTo(allMenuItems.listVehicles);
-                    Session.set(Constants.Error.AddEditVehicleError, null);
                     return;
                 }
                 Session.set(Constants.Error.AddEditVehicleError, error.message);

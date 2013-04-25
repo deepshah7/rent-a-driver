@@ -2,14 +2,17 @@
     <div id="templatemo_main" class="wrapper">
         <h2>Welcome To Rent A Driver</h2>
         <div class="clear"></div>
-        {{#if isAddVehicle}}
-            {{> addEditVehicle}}
-        {{/if}}
-        {{#if isEditVehicle}}
+        {{#if isAddVehicle or isEditVehicle}}
             {{> addEditVehicle}}
         {{/if}}
         {{#if isListVehicles}}
             {{> listVehicles}}
+        {{/if}}
+        {{#if isAddDriver or isEditDriver}}
+            {{> addEditDriver}}
+        {{/if}}
+        {{#if isListDrivers}}
+            {{> listDrivers}}
         {{/if}}
     </div>
 </template>

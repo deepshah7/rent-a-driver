@@ -1,0 +1,21 @@
+<template name="listDrivers">
+    {{#if hasDrivers}}
+    <div id="drivers-view">
+        <ul id="driver-list">
+            {{#each drivers}}
+                {{> driver}}
+            {{/each}}
+        </ul>
+    </div>
+    {{else}}
+        <div class="alert alert-error">No Drivers configured in the system yet!</div>
+    {{/if}}
+</template>
+
+<template name="driver">
+    <li class="driver">
+        <div class="display">
+            <div class="driver-text">{{name}} - {{license.number}} - {{vehicle_name}}</div>
+        </div>
+    </li>
+</template>

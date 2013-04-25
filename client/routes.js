@@ -23,6 +23,7 @@ var Router = Backbone.Router.extend({
     addVehicle: function() {
         Session.set(Constants.EditVehicle, null);
         Session.set(Constants.Vehicle.SelectedBrand, null);
+        Session.set(Constants.Error.AddEditVehicleError, null);
         this.updateSessionVariables(Operations.AddVehicle);
     },
 
@@ -35,6 +36,7 @@ var Router = Backbone.Router.extend({
         this.updateSessionVariables(Operations.EditVehicle);
         Session.set(Constants.EditVehicle, vehicle);
         Session.set(Constants.Vehicle.SelectedBrand, vehicle.brand_id);
+        Session.set(Constants.Error.AddEditVehicleError, null);
     },
 
     listVehicle: function() {
@@ -42,10 +44,12 @@ var Router = Backbone.Router.extend({
     },
 
     addDriver: function() {
+        Session.set(Constants.Error.AddEditDriverError, null);
         this.updateSessionVariables(Operations.AddDriver);
     },
 
     editDriver: function(driverId) {
+        Session.set(Constants.Error.AddEditDriverError, null);
         this.updateSessionVariables(Operations.EditDriver);
     },
 

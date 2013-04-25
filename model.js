@@ -1,6 +1,7 @@
 Brands = new Meteor.Collection("brands");
 Models = new Meteor.Collection("models");
 Vehicles = new Meteor.Collection("vehicles");
+Drivers = new Meteor.Collection("drivers");
 
 Vehicles.allow({
   insert: function (userId, vehicle) {
@@ -49,6 +50,18 @@ Validator = {
         if (! Meteor.userId())
             return new Meteor.Error(403, "You must be logged in");
         return null;
+    },
+    validateDriver: function(driver) {
+        driver = driver || {};
+        if (! (typeof driver.vehicle_id === "string" && driver.vehicle_id.length &&
+            typeof driver.name === "string" && driver.name.length &&
+            typeof driver.panNumber === "string" && driver.panNumber.length &&
+            typeof driver.license.number === "string" && driver.license.number.length &&
+            typeof driver.license.validTill === "string" && driver.license.validTill.length))
+            return new Meteor.Error(400, "Required parameter missing");
+        if (! Meteor.userId())
+            return new Meteor.Error(403, "You must be logged in");
+        return null;
     }
 };
 
@@ -60,7 +73,6 @@ Meteor.methods({
       if(!vehicle._id) {
           return Vehicles.insert({
               owner: this.userId,
-              co_owner: [this.userId],
               regNumber: vehicle.regNumber,
               brand_id: vehicle.brand_id,
               model_id: vehicle.model_id,
@@ -73,6 +85,28 @@ Meteor.methods({
           brand_id: vehicle.brand_id,
           model_id: vehicle.model_id,
           comments: vehicle.comments
+      }});
+  },
+  saveDriver: function (driver) {
+      var error = Validator.validateDriver(driver);
+      if(error) throw error;
+
+      if(!driver._id) {
+          return Drivers.insert({
+              name: driver.name,
+              panNumber: driver.panNumber,
+              license: driver.license,
+              vehicle_id: driver.vehicle_id,
+              comments: driver.comments
+          });
+          return;
+      }
+      return Drivers.update(driver._id, {$set: {
+          name: driver.name,
+          panNumber: driver.panNumber,
+          license: driver.license,
+          vehicle_id: driver.vehicle_id,
+          comments: driver.comments
       }});
   }
 });

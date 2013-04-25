@@ -1,0 +1,52 @@
+<template name="addEditDriver">
+    <h5>Add/Edit Driver</h5>
+    <div class="clear h20"></div>
+    <div id="contact_form">
+        <form method="post" name="driverInformation" action="#">
+
+            {{#if error}}
+            <div class="alert alert-error">{{error}}</div>
+            {{/if}}
+            <div class="clear h20"></div>
+            <div class="col one_third">
+                <input type="hidden" name="_id" class="_id" value="{{driver._id}}" />
+                <label for="name">* Name:</label>
+                <input type="text" name="name" id="name" class="name input_field"  value="{{driver.name}}"/>
+                <div class="cleaner h10"></div>
+
+                <label for="panNumber">* PAN:</label>
+                <input type="text" name="panNumber" id="panNumber" class="panNumber input_field"  value="{{driver.panNumber}}"/>
+                <div class="cleaner h10"></div>
+
+                <label for="licenseNumber">* License:</label>
+                <input type="text" name="licenseNumber" id="licenseNumber" class="licenseNumber input_field"  value="{{driver.license.number}}"/>
+                <div class="cleaner h10"></div>
+
+                <label for="licenseValidTill">* Valid Till:</label>
+                <input type="text" name="licenseValidTill" id="licenseValidTill" class="licenseValidTill input_field"  value="{{driver.license.validTill}}"/>
+                <div class="cleaner h10"></div>
+
+                <label for="vehicle_id">* Vehicle:</label>
+                    <select name="vehicle_id" id="vehicle_id" class="vehicle_id required input_field">
+                        <option value="">Select</option>
+                        {{#each vehicles}}
+                            <option value="{{_id}}" {{isVehicleSelected}}>{{regNumber}}</option>
+                        {{/each}}
+                    </select>
+                <div class="cleaner h10"></div>
+
+            </div>
+
+            <div class="col two-third no_margin_right">
+                <label for="comments">Comments:</label> <textarea id="text" name="comments" rows="0" cols="0" class="comments" id="comments">{{driver.comments}}</textarea>
+                <div class="cleaner h10"></div>
+            </div>
+
+            <div class="cleaner h20"></div>
+
+            <input type="button" value="Save" id="save" name="save" class="submit_btn float_l save" />
+
+        </form>
+    </div>
+    <div class="clear h40"></div>
+</template>
