@@ -41,9 +41,9 @@ Models.allow({
 Validator = {
     validateVehicle: function(vehicle) {
         vehicle = vehicle || {};
-        if (! (typeof vehicle.brand === "string" && vehicle.brand.length &&
-            typeof vehicle.model === "string" &&
-            vehicle.model.length &&
+        if (! (typeof vehicle.brand_id === "string" && vehicle.brand_id.length &&
+            typeof vehicle.model_id === "string" &&
+            vehicle.model_id.length &&
             typeof vehicle.regNumber === "string" && vehicle.regNumber.length))
             return new Meteor.Error(400, "Required parameter missing");
         if (! Meteor.userId())
@@ -62,16 +62,16 @@ Meteor.methods({
               owner: this.userId,
               co_owner: [this.userId],
               regNumber: vehicle.regNumber,
-              brand: vehicle.brand,
-              model: vehicle.model,
+              brand_id: vehicle.brand_id,
+              model_id: vehicle.model_id,
               comments: vehicle.comments
           });
           return;
       }
       return Vehicles.update(vehicle._id, {$set: {
           regNumber: vehicle.regNumber,
-          brand: vehicle.brand,
-          model: vehicle.model,
+          brand_id: vehicle.brand_id,
+          model_id: vehicle.model_id,
           comments: vehicle.comments
       }});
   }

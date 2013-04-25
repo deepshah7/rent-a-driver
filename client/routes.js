@@ -22,6 +22,7 @@ var Router = Backbone.Router.extend({
 
     addVehicle: function() {
         Session.set(Constants.EditVehicle, null);
+        Session.set(Constants.Vehicle.SelectedBrand, null);
         this.updateSessionVariables(Operations.AddVehicle);
     },
 
@@ -33,6 +34,7 @@ var Router = Backbone.Router.extend({
         }
         this.updateSessionVariables(Operations.EditVehicle);
         Session.set(Constants.EditVehicle, vehicle);
+        Session.set(Constants.Vehicle.SelectedBrand, vehicle.brand_id);
     },
 
     listVehicle: function() {

@@ -4,8 +4,8 @@ Meteor.publish("brands", function () {
   return Brands.find({});
 });
 
-Meteor.publish("models", function (brand_id) {
-  return Models.find({brand_id: brand_id});
+Meteor.publish("models", function () {
+  return Models.find({});
 });
 
 Meteor.publish("vehicles", function () {

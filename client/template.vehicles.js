@@ -14,17 +14,26 @@ Template.addEditVehicle.models = function() {
     return Models.find({brand_id: Session.get(Constants.Vehicle.SelectedBrand)});
 };
 
+Template.addEditVehicle.isBrandSelected = function() {
+    var editVehicle = Template.addEditVehicle.vehicle();
+    return  editVehicle && this._id === editVehicle.brand_id? "selected='selected'" : "";
+};
+
+Template.addEditVehicle.isModelSelected = function() {
+    var editVehicle = Template.addEditVehicle.vehicle();
+    return  editVehicle && this._id === editVehicle.model_id? "selected='selected'" : "";
+};
 
 Template.addEditVehicle.events({
     'click .save': function(event, template) {
         var vehicle = {};
         vehicle._id = template.find("._id").value;
-        vehicle.brand = template.find(".brand").value;
-        vehicle.model = template.find(".model").value;
+        vehicle.brand_id = template.find(".brand_id").value;
+        vehicle.model_id = template.find(".model_id").value;
         vehicle.regNumber = template.find(".regNumber").value;
         vehicle.comments = template.find(".comments").value;
 
-        if(vehicle.brand.length && vehicle.model.length && vehicle.regNumber.length) {
+        if(vehicle.brand_id.length && vehicle.model_id.length && vehicle.regNumber.length) {
             Meteor.call('saveVehicle', vehicle, function(error, vehicle) {
                 if(!error) {
                     app.navigateTo(allMenuItems.listVehicles);
@@ -40,8 +49,8 @@ Template.addEditVehicle.events({
     'change .input_field': function(event, template) {
         Session.set(Constants.Error.AddEditVehicleError, null);
     },
-    'change .brand': function(event, template) {
-        Session.set(Constants.Vehicle.SelectedBrand, template.find(".brand").value);
+    'change .brand_id': function(event, template) {
+        Session.set(Constants.Vehicle.SelectedBrand, template.find(".brand_id").value);
     }
 });
 
@@ -60,3 +69,10 @@ Template.listVehicles.events({
     }
 });
 
+Template.vehicle.brand_name = function() {
+    return Brands.findOne({_id: this.brand_id}).name;
+};
+
+Template.vehicle.model_name = function() {
+    return Models.findOne({_id: this.model_id}).name;
+};
