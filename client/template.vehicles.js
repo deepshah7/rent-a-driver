@@ -3,7 +3,7 @@ Template.addEditVehicle.error = function() {
 };
 
 Template.addEditVehicle.vehicle = function() {
-    return Session.get(Constants.EditVehicle);
+    return Session.get(Constants.Vehicle.Edit);
 };
 
 Template.addEditVehicle.brands = function() {
@@ -62,9 +62,13 @@ Template.listVehicles.vehicles = function() {
 };
 
 Template.listVehicles.events({
-    'click .entity': function(event, template) {
+    'click .editVehicle': function(event, template) {
         app.navigateTo(allMenuItems.editVehicle, this._id);
-        Session.set(Constants.EditVehicle, this);
+        Session.set(Constants.Vehicle.Edit, this);
+    },
+    'click .logVehicle': function(event, template) {
+        app.navigateTo(allMenuItems.logVehicle, this._id);
+        Session.set(Constants.Vehicle.Edit, this);
     }
 });
 
@@ -75,3 +79,11 @@ Template.vehicle.brand_name = function() {
 Template.vehicle.model_name = function() {
     return Models.findOne({_id: this.model_id}).name;
 };
+
+Template.vehicle.actionClassName = function() {
+    if(Helpers.isCurrentUserAdminUser()) {
+        return Constants.Vehicle.Edit;
+    }
+    return Constants.Vehicle.Log;
+};
+

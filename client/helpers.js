@@ -20,7 +20,7 @@ Helpers = {
     initializeAllMenuItems: function() {
         allMenuItems.home = this.createMenuItem("/", "Home", "home", Operations.Home);
         allMenuItems.addVehicle = this.createMenuItem("/vehicles/add", "Add Vehicle", "addVehicle", Operations.AddVehicle);
-        allMenuItems.logVehicle = this.createMenuItem("/vehicles/log", "Log Vehicle", "logVehicle", Operations.LogVehicle);
+        allMenuItems.logVehicle = this.createMenuItem("/vehicles/log/", "Log Vehicle", "logVehicle", Operations.LogVehicle);
         allMenuItems.listVehicles = this.createMenuItem("/vehicles", "List Vehicles", "listVehicle", Operations.ListVehicles);
         allMenuItems.vehicles = this.createMenuItem("/vehicles", "Vehicle", "vehicle", Operations.Vehicle, [
             allMenuItems.listVehicles,

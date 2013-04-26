@@ -10,6 +10,7 @@ var Router = Backbone.Router.extend({
         "":                                     "main",
         "vehicles/add":                          "addVehicle",
         "vehicles/edit/:vehicleId":              "editVehicle",
+        "vehicles/log/:vehicleId":              "logVehicle",
         "vehicles":                              "listVehicle",
         "drivers/add":                           "addDriver",
         "drivers/edit/:driverId":                "editDriver",
@@ -25,7 +26,7 @@ var Router = Backbone.Router.extend({
             this.navigateTo(allMenuItems.Home);
             return;
         }
-        Session.set(Constants.EditVehicle, null);
+        Session.set(Constants.Vehicle.Edit, null);
         Session.set(Constants.Vehicle.SelectedBrand, null);
         Session.set(Constants.Error.AddEditVehicleError, null);
         this.updateSessionVariables(Operations.AddVehicle);
@@ -42,9 +43,13 @@ var Router = Backbone.Router.extend({
             return;
         }
         this.updateSessionVariables(Operations.EditVehicle);
-        Session.set(Constants.EditVehicle, vehicle);
+        Session.set(Constants.Vehicle.Edit, vehicle);
         Session.set(Constants.Vehicle.SelectedBrand, vehicle.brand_id);
         Session.set(Constants.Error.AddEditVehicleError, null);
+    },
+
+    logVehicle: function(vehicleId) {
+
     },
 
     listVehicle: function() {

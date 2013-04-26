@@ -28,9 +28,10 @@ Constants = {
         AddEditVehicleError: "addEditVehicleError",
         AddEditDriverError: "addEditDriverError"
     },
-    EditVehicle: "editVehicle",
     Vehicle: {
-        SelectedBrand: "selectedBrand"
+        SelectedBrand: "selectedBrand",
+        Edit: "editVehicle",
+        Log: "logVehicle"
     }
 };
 

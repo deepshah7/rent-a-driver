@@ -17,6 +17,10 @@ Template.content.isEditVehicle = function() {
     return Helpers.isOperationMatching(Operations.EditVehicle);
 };
 
+Template.content.isLogVehicle = function() {
+    return Helpers.isOperationMatching(Operations.LogVehicle);
+};
+
 Template.content.isListVehicles = function() {
     return Helpers.isOperationMatching(Operations.ListVehicles);
 };
