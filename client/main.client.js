@@ -1,8 +1,9 @@
+Meteor.subscribe("directory");
 Meteor.subscribe("vehicles");
+Meteor.subscribe("vehicleLogs");
 Meteor.subscribe("brands");
 Meteor.subscribe('models');
 Meteor.subscribe('drivers');
-Meteor.subscribe('directory');
 
 Helpers.initializeAllMenuItems();
 

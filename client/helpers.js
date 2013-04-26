@@ -20,12 +20,10 @@ Helpers = {
     initializeAllMenuItems: function() {
         allMenuItems.home = this.createMenuItem("/", "Home", "home", Operations.Home);
         allMenuItems.addVehicle = this.createMenuItem("/vehicles/add", "Add Vehicle", "addVehicle", Operations.AddVehicle);
-        allMenuItems.logVehicle = this.createMenuItem("/vehicles/log/", "Log Vehicle", "logVehicle", Operations.LogVehicle);
         allMenuItems.listVehicles = this.createMenuItem("/vehicles", "List Vehicles", "listVehicle", Operations.ListVehicles);
         allMenuItems.vehicles = this.createMenuItem("/vehicles", "Vehicle", "vehicle", Operations.Vehicle, [
             allMenuItems.listVehicles,
-            allMenuItems.addVehicle,
-            allMenuItems.logVehicle
+            allMenuItems.addVehicle
         ]);
 
         allMenuItems.addDriver = this.createMenuItem("/drivers/add", "Add Driver", "addDriver", Operations.AddDriver);
@@ -35,6 +33,7 @@ Helpers = {
             allMenuItems.addDriver
         ])
         allMenuItems.editVehicle = this.createMenuItem("/vehicles/edit/", "Edit Vehicle", "editVehicle", Operations.EditVehicle);
+        allMenuItems.logVehicle = this.createMenuItem("/vehicles/log/", "Log Vehicle", "logVehicle", Operations.LogVehicle);
         allMenuItems.editDriver = this.createMenuItem("/drivers/edit/", "Edit Driver", "editDriver", Operations.EditDriver);
     },
 
@@ -47,7 +46,11 @@ Helpers = {
     },
 
     isAdminUser: function(user) {
-        return user && user.emails && user.emails.length > 0 && user.emails[0].address === Constants.AdminUserEmail;
+        return  this.getUserEmail(user) === Constants.AdminUserEmail;
+    },
+
+    getUserEmail: function(user) {
+        return user && user.emails && user.emails.length > 0 ? user.emails[0].address : "";
     },
 
     initializeMenu: function() {
@@ -66,19 +69,27 @@ Helpers = {
         return Session.equals(Constants.Operation, operation.name);
     },
 
-    addOtherMenuItems: function(items) {
-        var normalUserMenuItems = _.clone(allMenuItems.vehicles);
-        normalUserMenuItems.subMenus.splice(0, 2);
-        items.push(normalUserMenuItems)
-
-    },
-
     addAdminMenuItems: function(items) {
         items.push(allMenuItems.vehicles);
         items.push(allMenuItems.drivers);
     },
 
+    addOtherMenuItems: function(items) {
+        var normalUserMenuItems = _.clone(allMenuItems.vehicles);
+        normalUserMenuItems.subMenus.splice(0, 2);
+        items.push(normalUserMenuItems)
+    },
+
     isSelectedItem: function(item) {
         return Session.equals(Constants.ParentOperation, item.operation.parent);
+    },
+
+    toUsersMap: function() {
+        var users = [];
+        _.each(Meteor.users.find().fetch(), function(user) {
+            if(!Helpers.isAdminUser(user))
+                users.push({_id: user._id, email: Helpers.getUserEmail(user)});
+        });
+        return users;
     }
 };

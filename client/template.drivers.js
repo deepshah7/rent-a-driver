@@ -11,12 +11,7 @@ Template.addEditDriver.vehicles = function() {
 };
 
 Template.addEditDriver.users = function() {
-    var users = [];
-    _.each(Meteor.users.find().fetch(), function(user) {
-        if(!Helpers.isAdminUser(user))
-            users.push({_id: user._id, email: user.emails[0].address});
-    });
-    return users;
+    return Helpers.toUsersMap();
 };
 
 Template.addEditDriver.isVehicleSelected = function() {

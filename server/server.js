@@ -1,7 +1,7 @@
 // All Tomorrow's Parties -- server
 
 Meteor.publish("directory", function () {
-    return Meteor.users.find({}, {fields: {emails: 1, profile: 1}});
+        return Meteor.users.find({}, {fields: {emails: 1, profile: 1}});
 });
 
 Meteor.publish("brands", function () {
@@ -22,3 +22,8 @@ Meteor.publish("vehicles", function () {
     return Vehicles.find(
         {$or: [{_id: vehicle_id}, {owner: this.userId}]});
 });
+
+Meteor.publish("vehicleLogs", function () {
+    return VehicleLogs.find({});
+});
+

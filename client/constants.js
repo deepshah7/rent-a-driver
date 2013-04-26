@@ -26,6 +26,7 @@ Constants = {
     ParentOperation: "parentOperation",
     Error: {
         AddEditVehicleError: "addEditVehicleError",
+        LogVehicleError: "logVehicleError",
         AddEditDriverError: "addEditDriverError"
     },
     Vehicle: {

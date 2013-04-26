@@ -1,0 +1,48 @@
+<template name="logVehicle">
+    <h5>Log Vehicle Information</h5>
+    <div class="clear h20"></div>
+    <div id="contact_form">
+        <form method="post" name="vehicleInformation" action="#">
+
+            {{#if error}}
+            <div class="alert alert-error">{{error}}</div>
+            {{/if}}
+            <div class="clear h20"></div>
+            <div class="col one_third">
+                <input type="hidden" name="vehicle_id" class="vehicle_id" value="{{vehicle_id}}" />
+                <label for="user_id">* Driver:</label>
+                {{#if isAdmin}}
+                    <select name="user_id" id="user_id" class="user_id required input_field">
+                        <option value="">Select</option>
+                        {{#each users}}
+                        <option value="{{_id}}">{{email}}</option>
+                        {{/each}}
+                    </select>
+                {{else}}
+                    <input type="hidden" name="user_id" class="user_id" value="{{user_id}}" />
+                    <label style="font-weight: bold; padding-bottom: 10px;">{{user_email}}</label>
+                {{/if}}
+                <div class="cleaner h10"></div>
+                <label for="when">* When:</label>
+                <input type="text" name="when" id="when" class="when input_field" />
+                <div class="cleaner h10"></div>
+
+                <label for="reading">* Reading:</label>
+                <input type="text" name="reading" id="reading" class="reading input_field" />
+                <div class="cleaner h10"></div>
+            </div>
+
+            <div class="col two-third no_margin_right">
+                <label for="comments">Comments:</label>
+                <textarea id="text" name="comments" rows="0" cols="0" class="comments" id="comments"></textarea>
+                <div class="cleaner h10"></div>
+            </div>
+
+            <div class="cleaner h20"></div>
+
+            <input type="button" value="Save" id="save" name="save" class="submit_btn float_l save" />
+
+        </form>
+    </div>
+    <div class="clear h40"></div>
+</template>

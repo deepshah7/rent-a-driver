@@ -1,6 +1,7 @@
 Brands = new Meteor.Collection("brands");
 Models = new Meteor.Collection("models");
 Vehicles = new Meteor.Collection("vehicles");
+VehicleLogs = new Meteor.Collection("vehicleLogs");
 Drivers = new Meteor.Collection("drivers");
 
 Vehicles.allow({
@@ -51,6 +52,16 @@ Validator = {
             return new Meteor.Error(403, "You must be logged in");
         return null;
     },
+    validateVehicleLog: function(vehicle_log) {
+        vehicle_log = vehicle_log || {};
+        if (! (typeof vehicle_log.vehicle_id === "string" && vehicle_log.vehicle_id.length &&
+            typeof vehicle_log.user_id === "string" && vehicle_log.user_id.length &&
+            typeof vehicle_log.when === "object"))
+            return new Meteor.Error(400, "Required parameter missing");
+        if (! Meteor.userId())
+            return new Meteor.Error(403, "You must be logged in");
+        return null;
+    },
     validateDriver: function(driver) {
         driver = driver || {};
         if (! (typeof driver.vehicle_id === "string" && driver.vehicle_id.length &&
@@ -87,6 +98,19 @@ Meteor.methods({
           model_id: vehicle.model_id,
           comments: vehicle.comments
       }});
+  },
+  saveVehicleLog: function (vehicle_log) {
+      var error = Validator.validateVehicleLog(vehicle_log);
+      if(error) throw error;
+
+      return VehicleLogs.insert({
+          vehicle_id: vehicle_log.vehicle_id,
+          user_id: vehicle_log.user_id,
+          entered_by_user_id: vehicle_log.entered_by_user_id,
+          when: vehicle_log.when,
+          reading: vehicle_log.reading,
+          comments: vehicle_log.comments
+      });
   },
   saveDriver: function (driver) {
       var error = Validator.validateDriver(driver);

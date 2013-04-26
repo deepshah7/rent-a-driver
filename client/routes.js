@@ -49,7 +49,17 @@ var Router = Backbone.Router.extend({
     },
 
     logVehicle: function(vehicleId) {
-
+        if(!Helpers.isUserLoggedIn()) {
+            this.navigateTo(allMenuItems.Home);
+            return;
+        }
+        var vehicle = Vehicles.findOne({_id: vehicleId});
+        if(!vehicle) {
+            this.navigateTo(allMenuItems.listVehicles);
+            return;
+        }
+        this.updateSessionVariables(Operations.LogVehicle);
+        Session.set(Constants.Vehicle.Edit, vehicle);
     },
 
     listVehicle: function() {

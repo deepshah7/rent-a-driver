@@ -254,3 +254,11 @@ a.header { display: block; font-weight: 700 }
 .entity-list .entity:hover {
     cursor: pointer;
 }
+
+.float_l {
+    float: left;
+}
+
+.negative-margin-top-8 {
+    margin-top: -8px;
+}
