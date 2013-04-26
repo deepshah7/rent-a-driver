@@ -15,6 +15,9 @@ Template.header.menuItems = function() {
     if(Helpers.isCurrentUserAdminUser()) {
         Helpers.addAdminMenuItems(items);
     }
+    else if(Helpers.isUserLoggedIn()) {
+        Helpers.addOtherMenuItems(items);
+    }
 
     _.each(items, function(item) {
         item.selected = Helpers.isSelectedItem(item) ? "selected" : "";

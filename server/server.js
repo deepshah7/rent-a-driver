@@ -17,6 +17,8 @@ Meteor.publish("drivers", function () {
 });
 
 Meteor.publish("vehicles", function () {
-  return Vehicles.find(
-    {$or: [{co_owner: this.userId}, {owner: this.userId}]});
+    var driver = Drivers.findOne({user_id: this.userId});
+    var vehicle_id = driver? driver.vehicle_id : "";
+    return Vehicles.find(
+        {$or: [{_id: vehicle_id}, {owner: this.userId}]});
 });

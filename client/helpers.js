@@ -20,19 +20,26 @@ Helpers = {
     initializeAllMenuItems: function() {
         allMenuItems.home = this.createMenuItem("/", "Home", "home", Operations.Home);
         allMenuItems.addVehicle = this.createMenuItem("/vehicles/add", "Add Vehicle", "addVehicle", Operations.AddVehicle);
+        allMenuItems.logVehicle = this.createMenuItem("/vehicles/log", "Log Vehicle", "logVehicle", Operations.LogVehicle);
         allMenuItems.listVehicles = this.createMenuItem("/vehicles", "List Vehicles", "listVehicle", Operations.ListVehicles);
         allMenuItems.vehicles = this.createMenuItem("/vehicles", "Vehicle", "vehicle", Operations.Vehicle, [
+            allMenuItems.listVehicles,
             allMenuItems.addVehicle,
-            allMenuItems.listVehicles
+            allMenuItems.logVehicle
         ]);
 
         allMenuItems.addDriver = this.createMenuItem("/drivers/add", "Add Driver", "addDriver", Operations.AddDriver);
         allMenuItems.listDrivers = this.createMenuItem("/drivers", "List Drivers", "listDriver", Operations.ListDrivers);
         allMenuItems.drivers = this.createMenuItem("/drivers", "Driver", "driver", Operations.Driver, [
-            allMenuItems.addDriver, allMenuItems.listDrivers
+            allMenuItems.listDrivers,
+            allMenuItems.addDriver
         ])
         allMenuItems.editVehicle = this.createMenuItem("/vehicles/edit/", "Edit Vehicle", "editVehicle", Operations.EditVehicle);
         allMenuItems.editDriver = this.createMenuItem("/drivers/edit/", "Edit Driver", "editDriver", Operations.EditDriver);
+    },
+
+    isUserLoggedIn: function() {
+        return Meteor.user() != null;
     },
 
     isCurrentUserAdminUser: function() {
@@ -57,6 +64,13 @@ Helpers = {
 
     isOperationMatching: function(operation) {
         return Session.equals(Constants.Operation, operation.name);
+    },
+
+    addOtherMenuItems: function(items) {
+        var normalUserMenuItems = _.clone(allMenuItems.vehicles);
+        normalUserMenuItems.subMenus.splice(0, 2);
+        items.push(normalUserMenuItems)
+
     },
 
     addAdminMenuItems: function(items) {

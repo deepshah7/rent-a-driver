@@ -48,7 +48,7 @@ var Router = Backbone.Router.extend({
     },
 
     listVehicle: function() {
-        if(!Helpers.isCurrentUserAdminUser()) {
+        if(!Helpers.isUserLoggedIn()) {
             this.navigateTo(allMenuItems.Home);
             return;
         }

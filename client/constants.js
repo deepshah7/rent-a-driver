@@ -10,6 +10,7 @@ Operations = {
     Vehicle: {name: "vehicle", parent: "vehicle" },
     Driver: {name: "driver", parent: "driver" },
 
+    LogVehicle: {name: "logVehicle", parent: "vehicle" },
     AddVehicle: {name: "addVehicle", parent: "vehicle" },
     EditVehicle: {name: "editVehicle", parent: "vehicle" },
     ListVehicles: {name: "listVehicles", parent: "vehicle" },
