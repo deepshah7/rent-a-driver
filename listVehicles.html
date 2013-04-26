@@ -1,7 +1,7 @@
 <template name="listVehicles">
     {{#if hasVehicles}}
-    <div id="vehicles-view">
-        <ul id="vehicle-list">
+    <div class="entity-view">
+        <ul class="entity-list">
             {{#each vehicles}}
                 {{> vehicle}}
             {{/each}}
@@ -13,9 +13,9 @@
 </template>
 
 <template name="vehicle">
-    <li class="vehicle">
+    <li class="entity">
         <div class="display">
-            <div class="vehicle-text">{{brand_name}} - {{model_name}} - {{regNumber}}</div>
+            <div class="entity-text">{{brand_name}} - {{model_name}} - {{regNumber}}</div>
         </div>
     </li>
 </template>

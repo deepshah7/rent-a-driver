@@ -35,9 +35,12 @@ Helpers = {
         allMenuItems.editDriver = this.createMenuItem("/drivers/edit/", "Edit Driver", "editDriver", Operations.EditDriver);
     },
 
-    isAdminUser: function() {
-        var user = Meteor.user();
-        return user && user.emails && user.emails.length > 0 && user.emails[0].address === "admin@rentadriver.com";
+    isCurrentUserAdminUser: function() {
+        return this.isAdminUser(Meteor.user());
+    },
+
+    isAdminUser: function(user) {
+        return user && user.emails && user.emails.length > 0 && user.emails[0].address === Constants.AdminUserEmail;
     },
 
     initializeMenu: function() {

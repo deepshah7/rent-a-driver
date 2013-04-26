@@ -15,7 +15,7 @@
                 <select name="user_id" id="user_id" class="user_id required input_field">
                     <option value="">Select</option>
                     {{#each users}}
-                    <option value="{{_id}}" {{isUserSelected}}>{{_id}}</option>
+                    <option value="{{_id}}" {{isUserSelected}}>{{email}}</option>
                     {{/each}}
                 </select>
                 <div class="cleaner h10"></div>

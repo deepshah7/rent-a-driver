@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 Template.content.isAdmin = function () {
-    return Helpers.isAdminUser();
+    return Helpers.isCurrentUserAdminUser();
 };
 
 Template.content.isAddVehicle = function() {

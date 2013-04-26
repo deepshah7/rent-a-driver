@@ -20,6 +20,7 @@ Operations = {
 
 
 Constants = {
+    AdminUserEmail: "admin@rentadriver.com",
     Operation: "operation",
     ParentOperation: "parentOperation",
     Error: {

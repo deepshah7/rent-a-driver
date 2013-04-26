@@ -62,7 +62,7 @@ Template.listVehicles.vehicles = function() {
 };
 
 Template.listVehicles.events({
-    'click .vehicle': function(event, template) {
+    'click .entity': function(event, template) {
         app.navigateTo(allMenuItems.editVehicle, this._id);
         Session.set(Constants.EditVehicle, this);
     }

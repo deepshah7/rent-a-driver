@@ -21,6 +21,10 @@ var Router = Backbone.Router.extend({
     },
 
     addVehicle: function() {
+        if(!Helpers.isCurrentUserAdminUser()) {
+            this.navigateTo(allMenuItems.Home);
+            return;
+        }
         Session.set(Constants.EditVehicle, null);
         Session.set(Constants.Vehicle.SelectedBrand, null);
         Session.set(Constants.Error.AddEditVehicleError, null);
@@ -28,6 +32,10 @@ var Router = Backbone.Router.extend({
     },
 
     editVehicle: function(vehicleId) {
+        if(!Helpers.isCurrentUserAdminUser()) {
+            this.navigateTo(allMenuItems.Home);
+            return;
+        }
         var vehicle = Vehicles.findOne({_id: vehicleId});
         if(!vehicle) {
             this.navigateTo(allMenuItems.listVehicles);
@@ -40,20 +48,36 @@ var Router = Backbone.Router.extend({
     },
 
     listVehicle: function() {
+        if(!Helpers.isCurrentUserAdminUser()) {
+            this.navigateTo(allMenuItems.Home);
+            return;
+        }
         this.updateSessionVariables(Operations.ListVehicles);
     },
 
     addDriver: function() {
+        if(!Helpers.isCurrentUserAdminUser()) {
+            this.navigateTo(allMenuItems.Home);
+            return;
+        }
         Session.set(Constants.Error.AddEditDriverError, null);
         this.updateSessionVariables(Operations.AddDriver);
     },
 
     editDriver: function(driverId) {
+        if(!Helpers.isCurrentUserAdminUser()) {
+            this.navigateTo(allMenuItems.Home);
+            return;
+        }
         Session.set(Constants.Error.AddEditDriverError, null);
         this.updateSessionVariables(Operations.EditDriver);
     },
 
     listDriver: function() {
+        if(!Helpers.isCurrentUserAdminUser()) {
+            this.navigateTo(allMenuItems.Home);
+            return;
+        }
         this.updateSessionVariables(Operations.ListDrivers);
     },
 

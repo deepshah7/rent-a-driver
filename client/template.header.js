@@ -12,7 +12,7 @@ Template.header.isAdmin = function () {
 Template.header.menuItems = function() {
     var items = [];
     items.push(allMenuItems.home);
-    if(Helpers.isAdminUser()) {
+    if(Helpers.isCurrentUserAdminUser()) {
         Helpers.addAdminMenuItems(items);
     }
 

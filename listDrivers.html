@@ -1,7 +1,7 @@
 <template name="listDrivers">
     {{#if hasDrivers}}
-    <div id="drivers-view">
-        <ul id="driver-list">
+    <div class="entity-view">
+        <ul class="entity-list">
             {{#each drivers}}
                 {{> driver}}
             {{/each}}
@@ -13,9 +13,9 @@
 </template>
 
 <template name="driver">
-    <li class="driver">
+    <li class="entity">
         <div class="display">
-            <div class="driver-text">{{name}} - {{license.number}} - {{vehicle_name}}</div>
+            <div class="entity-text">{{name}} - {{license.number}} - {{vehicle_name}}</div>
         </div>
     </li>
 </template>

@@ -11,7 +11,12 @@ Template.addEditDriver.vehicles = function() {
 };
 
 Template.addEditDriver.users = function() {
-    return Meteor.users.find();
+    var users = [];
+    _.each(Meteor.users.find().fetch(), function(user) {
+        if(!Helpers.isAdminUser(user))
+            users.push({_id: user._id, email: user.emails[0].address});
+    });
+    return users;
 };
 
 Template.addEditDriver.isVehicleSelected = function() {
@@ -69,7 +74,7 @@ Template.listDrivers.drivers = function() {
 };
 
 Template.listDrivers.events({
-    'click .driver': function(event, template) {
+    'click .entity': function(event, template) {
         app.navigateTo(allMenuItems.editDriver, this._id);
         Session.set(Constants.EditDriver, this);
     }
