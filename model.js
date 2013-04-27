@@ -44,12 +44,17 @@ Validator = {
     validateVehicle: function(vehicle) {
         vehicle = vehicle || {};
         if (! (typeof vehicle.brand_id === "string" && vehicle.brand_id.length &&
-            typeof vehicle.model_id === "string" &&
-            vehicle.model_id.length &&
-            typeof vehicle.regNumber === "string" && vehicle.regNumber.length))
+            typeof vehicle.model_id === "string" && vehicle.model_id.length &&
+            typeof vehicle.regNumber === "string" && vehicle.regNumber.length &&
+            typeof vehicle.policyNumber === "string" && vehicle.policyNumber.length &&
+            typeof vehicle.policyFrom === "string" && vehicle.policyFrom.length &&
+            typeof vehicle.policyTo === "string" && vehicle.policyTo.length
+            ))
             return new Meteor.Error(400, "Required parameter missing");
         if (! Meteor.userId())
             return new Meteor.Error(403, "You must be logged in");
+        vehicle.policyFrom = new Date(vehicle.policyFrom);
+        vehicle.policyTo = new Date(vehicle.policyTo);
         return null;
     },
     validateVehicleLog: function(vehicle_log) {
@@ -88,6 +93,11 @@ Meteor.methods({
               regNumber: vehicle.regNumber,
               brand_id: vehicle.brand_id,
               model_id: vehicle.model_id,
+              insurance: {
+                  number: vehicle.policyNumber,
+                  from: vehicle.policyFrom,
+                  to: vehicle.policyTo
+              },
               comments: vehicle.comments
           });
           return;
@@ -96,6 +106,11 @@ Meteor.methods({
           regNumber: vehicle.regNumber,
           brand_id: vehicle.brand_id,
           model_id: vehicle.model_id,
+          insurance: {
+              number: vehicle.policyNumber,
+              from: vehicle.policyFrom,
+              to: vehicle.policyTo
+          },
           comments: vehicle.comments
       }});
   },

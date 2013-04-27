@@ -1,3 +1,12 @@
+Template.addEditVehicle.rendered = function() {
+  $(".policyFrom,.policyTo").datepicker({
+      changeMonth: true,
+      changeYear: true
+  });
+    Helpers.formatDate(".policyFrom");
+    Helpers.formatDate(".policyTo");
+};
+
 Template.addEditVehicle.error = function() {
     return Session.get(Constants.Error.AddEditVehicleError);
 };
@@ -31,9 +40,18 @@ Template.addEditVehicle.events({
         vehicle.brand_id = template.find(".brand_id").value;
         vehicle.model_id = template.find(".model_id").value;
         vehicle.regNumber = template.find(".regNumber").value;
+        vehicle.policyNumber = template.find(".policyNumber").value;
+        vehicle.policyFrom = template.find(".policyFrom").value;
+        vehicle.policyTo = template.find(".policyTo").value;
         vehicle.comments = template.find(".comments").value;
 
-        if(vehicle.brand_id.length && vehicle.model_id.length && vehicle.regNumber.length) {
+        if(vehicle.brand_id.length
+            && vehicle.model_id.length
+            && vehicle.regNumber.length
+            && vehicle.policyNumber.length
+            && vehicle.policyFrom.length
+            && vehicle.policyTo.length
+            ) {
             Meteor.call('saveVehicle', vehicle, function(error, vehicle) {
                 if(!error) {
                     app.navigateTo(allMenuItems.listVehicles);

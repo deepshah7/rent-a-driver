@@ -30,6 +30,15 @@
 
                 <label for="regNumber">* Registration Number:</label> <input type="text" name="regNumber" id="regNumber" class="regNumber input_field"  value="{{vehicle.regNumber}}"/>
                 <div class="cleaner h10"></div>
+
+                <label for="policyNumber">* Policy Number:</label> <input type="text" name="policyNumber" id="policyNumber" class="policyNumber input_field"  value="{{vehicle.insurance.number}}"/>
+                <div class="cleaner h10"></div>
+
+                <label for="policyFrom">* Policy From:</label> <input type="text" name="policyFrom" id="policyFrom" class="policyFrom input_field"  value="{{vehicle.insurance.from}}" readonly="readonly"/>
+                <div class="cleaner h10"></div>
+
+                <label for="policyTo">* Policy To:</label> <input type="text" name="policyTo" id="policyTo" class="policyTo input_field"  value="{{vehicle.insurance.to}}"  readonly="readonly"/>
+                <div class="cleaner h10"></div>
             </div>
 
             <div class="col two-third no_margin_right">

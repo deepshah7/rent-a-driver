@@ -21,6 +21,9 @@ Operations = {
 
 
 Constants = {
+    Application: {
+        DefaultDateFormat: "mm/dd/yyyy"
+    },
     AdminUserEmail: "admin@rentadriver.com",
     Operation: "operation",
     ParentOperation: "parentOperation",

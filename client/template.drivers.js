@@ -75,6 +75,10 @@ Template.listDrivers.events({
     }
 });
 
+Template.driver.user_name = function() {
+    return Helpers.getUserEmail(Meteor.users.findOne({_id: this.user_id}));
+};
+
 Template.driver.vehicle_name = function() {
     return Vehicles.findOne({_id: this.vehicle_id}).regNumber;
 };

@@ -91,5 +91,13 @@ Helpers = {
                 users.push({_id: user._id, email: Helpers.getUserEmail(user)});
         });
         return users;
+    },
+
+    formatDate: function(selector) {
+        var $element = $(selector);
+        var currentDate = $element.val();
+        if(!currentDate) return;
+
+        $element.val(new Date(currentDate).format(Constants.Application.DefaultDateFormat));
     }
 };
