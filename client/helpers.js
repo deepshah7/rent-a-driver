@@ -20,8 +20,8 @@ SessionHelper = {
         return Session.get(Constants.Driver.Edit);
     },
 
-    setEditDriver: function(vehicle) {
-        Session.set(Constants.Driver.Edit, vehicle);
+    setEditDriver: function(driver) {
+        Session.set(Constants.Driver.Edit, driver);
     },
 
     getSelectedBrand: function() {

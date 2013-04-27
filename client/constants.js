@@ -37,6 +37,9 @@ Constants = {
         SelectedBrand: "selectedBrand",
         Edit: "editVehicle",
         Log: "logVehicle"
+    },
+    Driver: {
+        Edit: "editDriver"
     }
 };
 
