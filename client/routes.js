@@ -59,6 +59,7 @@ var Router = Backbone.Router.extend({
             return;
         }
         this.updateSessionVariables(Operations.LogVehicle);
+        Session.set(Constants.Error.LogVehicleError, null);
         Session.set(Constants.Vehicle.Edit, vehicle);
     },
 

@@ -140,7 +140,7 @@ Template.logVehicle.events({
         vehicle_log.vehicle_id = template.find(".vehicle_id").value;
         vehicle_log.entered_by_user_id = Meteor.userId();
         vehicle_log.user_id = template.find(".user_id").value;
-        vehicle_log.when = new Date(template.find(".when").value);
+        vehicle_log.when = template.find(".when").value;
         vehicle_log.reading = template.find(".reading").value;
         vehicle_log.comments = template.find(".comments").value;
 

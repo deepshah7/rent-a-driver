@@ -61,10 +61,11 @@ Validator = {
         vehicle_log = vehicle_log || {};
         if (! (typeof vehicle_log.vehicle_id === "string" && vehicle_log.vehicle_id.length &&
             typeof vehicle_log.user_id === "string" && vehicle_log.user_id.length &&
-            typeof vehicle_log.when === "object"))
+            typeof vehicle_log.when === "string" && vehicle_log.when.length))
             return new Meteor.Error(400, "Required parameter missing");
         if (! Meteor.userId())
             return new Meteor.Error(403, "You must be logged in");
+        vehicle_log.when = new Date(vehicle_log.when);
         return null;
     },
     validateDriver: function(driver) {
