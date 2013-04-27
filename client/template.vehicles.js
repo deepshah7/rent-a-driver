@@ -1,10 +1,5 @@
 Template.addEditVehicle.rendered = function() {
-  $(".policyFrom,.policyTo").datepicker({
-      changeMonth: true,
-      changeYear: true
-  });
-    Helpers.formatDate(".policyFrom");
-    Helpers.formatDate(".policyTo");
+    Helpers.toDatePicker($(".policyFrom,.policyTo"));
 };
 
 Template.addEditVehicle.error = function() {
@@ -107,6 +102,11 @@ Template.vehicle.actionClassName = function() {
 
 Template.vehicle.isAdmin = function() {
     return Helpers.isCurrentUserAdminUser();
+};
+
+
+Template.logVehicle.rendered = function() {
+    Helpers.toDatePicker($(".when"));
 };
 
 Template.logVehicle.vehicle_id = function() {

@@ -1,3 +1,7 @@
+Template.addEditDriver.rendered = function() {
+    Helpers.toDatePicker($(".licenseValidTill"));
+};
+
 Template.addEditDriver.error = function() {
     return Session.get(Constants.Error.AddEditDriverError);
 };

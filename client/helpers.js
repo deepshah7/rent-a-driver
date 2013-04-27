@@ -93,11 +93,21 @@ Helpers = {
         return users;
     },
 
-    formatDate: function(selector) {
-        var $element = $(selector);
-        var currentDate = $element.val();
+    toDatePicker: function(elements) {
+        elements.datepicker({
+            changeMonth: true,
+            changeYear: true
+        });
+        var _this = this;
+        _.each(elements, function(element) {
+            _this.formatDate(element);
+        });
+    },
+
+    formatDate: function(element) {
+        var currentDate = $(element).val();
         if(!currentDate) return;
 
-        $element.val(new Date(currentDate).format(Constants.Application.DefaultDateFormat));
+        $(element).val(new Date(currentDate).format(Constants.Application.DefaultDateFormat));
     }
 };

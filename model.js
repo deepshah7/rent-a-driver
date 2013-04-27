@@ -78,6 +78,8 @@ Validator = {
             return new Meteor.Error(400, "Required parameter missing");
         if (! Meteor.userId())
             return new Meteor.Error(403, "You must be logged in");
+
+        driver.license.validTill = new Date(driver.license.validTill);
         return null;
     }
 };
@@ -90,7 +92,7 @@ Meteor.methods({
       if(!vehicle._id) {
           return Vehicles.insert({
               owner: this.userId,
-              regNumber: vehicle.regNumber,
+              regNumber: vehicle.regNumber.toUpperCase(),
               brand_id: vehicle.brand_id,
               model_id: vehicle.model_id,
               insurance: {
@@ -103,7 +105,7 @@ Meteor.methods({
           return;
       }
       return Vehicles.update(vehicle._id, {$set: {
-          regNumber: vehicle.regNumber,
+          regNumber: vehicle.regNumber.toUpperCase(),
           brand_id: vehicle.brand_id,
           model_id: vehicle.model_id,
           insurance: {
