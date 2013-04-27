@@ -10,7 +10,8 @@ var Router = Backbone.Router.extend({
         "":                                     "main",
         "vehicles/add":                          "addVehicle",
         "vehicles/edit/:vehicleId":              "editVehicle",
-        "vehicles/log/:vehicleId":              "logVehicle",
+        "vehicles/logs/add/:vehicleId":              "logVehicle",
+        "vehicles/logs/:vehicleId":              "viewLogVehicle",
         "vehicles":                              "listVehicle",
         "drivers/add":                           "addDriver",
         "drivers/edit/:driverId":                "editDriver",
@@ -26,9 +27,9 @@ var Router = Backbone.Router.extend({
             this.navigateTo(allMenuItems.Home);
             return;
         }
-        Session.set(Constants.Vehicle.Edit, null);
-        Session.set(Constants.Vehicle.SelectedBrand, null);
-        Session.set(Constants.Error.AddEditVehicleError, null);
+        SessionHelper.setEditVehicle(null);
+        SessionHelper.setSelectedBrand(null);
+        SessionHelper.setAddEditVehicleError(null);
         this.updateSessionVariables(Operations.AddVehicle);
     },
 
@@ -43,9 +44,9 @@ var Router = Backbone.Router.extend({
             return;
         }
         this.updateSessionVariables(Operations.EditVehicle);
-        Session.set(Constants.Vehicle.Edit, vehicle);
-        Session.set(Constants.Vehicle.SelectedBrand, vehicle.brand_id);
-        Session.set(Constants.Error.AddEditVehicleError, null);
+        SessionHelper.setEditVehicle(vehicle);
+        SessionHelper.setSelectedBrand(vehicle.brand_id);
+        SessionHelper.setAddEditVehicleError(null);
     },
 
     logVehicle: function(vehicleId) {
@@ -59,8 +60,22 @@ var Router = Backbone.Router.extend({
             return;
         }
         this.updateSessionVariables(Operations.LogVehicle);
-        Session.set(Constants.Error.LogVehicleError, null);
-        Session.set(Constants.Vehicle.Edit, vehicle);
+        SessionHelper.setLogVehicleError(null);
+        SessionHelper.setEditVehicle(vehicle);
+    },
+
+    viewLogVehicle: function(vehicleId) {
+        if(!Helpers.isCurrentUserAdminUser()) {
+            this.navigateTo(allMenuItems.Home);
+            return;
+        }
+        var vehicle = Vehicles.findOne({_id: vehicleId});
+        if(!vehicle) {
+            this.navigateTo(allMenuItems.listVehicles);
+            return;
+        }
+        this.updateSessionVariables(Operations.ViewLogVehicle);
+        SessionHelper.setEditVehicle(vehicle);
     },
 
     listVehicle: function() {
@@ -76,7 +91,7 @@ var Router = Backbone.Router.extend({
             this.navigateTo(allMenuItems.Home);
             return;
         }
-        Session.set(Constants.Error.AddEditDriverError, null);
+        SessionHelper.setAddEditDriverError(null);
         this.updateSessionVariables(Operations.AddDriver);
     },
 
@@ -85,7 +100,7 @@ var Router = Backbone.Router.extend({
             this.navigateTo(allMenuItems.Home);
             return;
         }
-        Session.set(Constants.Error.AddEditDriverError, null);
+        SessionHelper.setAddEditDriverError(null);
         this.updateSessionVariables(Operations.EditDriver);
     },
 
@@ -107,8 +122,7 @@ var Router = Backbone.Router.extend({
     },
 
     updateSessionVariables: function(operation) {
-        Session.set(Constants.Operation, operation.name);
-        Session.set(Constants.ParentOperation, operation.parent);
+        SessionHelper.setOperation(operation);
         Helpers.initializeMenu();
     }
 });

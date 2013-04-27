@@ -3,11 +3,11 @@ Template.addEditVehicle.rendered = function() {
 };
 
 Template.addEditVehicle.error = function() {
-    return Session.get(Constants.Error.AddEditVehicleError);
+    return SessionHelper.getAddEditVehicleError();
 };
 
 Template.addEditVehicle.vehicle = function() {
-    return Session.get(Constants.Vehicle.Edit);
+    return SessionHelper.getEditVehicle();
 };
 
 Template.addEditVehicle.brands = function() {
@@ -15,7 +15,7 @@ Template.addEditVehicle.brands = function() {
 };
 
 Template.addEditVehicle.models = function() {
-    return Models.find({brand_id: Session.get(Constants.Vehicle.SelectedBrand)});
+    return Models.find({brand_id: SessionHelper.getSelectedBrand()});
 };
 
 Template.addEditVehicle.isBrandSelected = function() {
@@ -52,17 +52,17 @@ Template.addEditVehicle.events({
                     app.navigateTo(allMenuItems.listVehicles);
                     return;
                 }
-                Session.set(Constants.Error.AddEditVehicleError, error.message);
+                SessionHelper.setAddEditDriverError(error.message);
             });
             return;
         }
-        Session.set(Constants.Error.AddEditVehicleError, "Please fill in all the required (*) fields");
+        SessionHelper.setAddEditVehicleError("Please fill in all the required (*) fields");
     },
     'change .input_field': function(event, template) {
-        Session.set(Constants.Error.AddEditVehicleError, null);
+        SessionHelper.setAddEditVehicleError(null);
     },
     'change .brand_id': function(event, template) {
-        Session.set(Constants.Vehicle.SelectedBrand, template.find(".brand_id").value);
+        SessionHelper.setSelectedBrand(template.find(".brand_id").value);
     }
 });
 
@@ -77,11 +77,15 @@ Template.listVehicles.vehicles = function() {
 Template.listVehicles.events({
     'click .editVehicle': function(event, template) {
         app.navigateTo(allMenuItems.editVehicle, this._id);
-        Session.set(Constants.Vehicle.Edit, this);
+        SessionHelper.setEditVehicle(this);
     },
     'click .logVehicle': function(event, template) {
         app.navigateTo(allMenuItems.logVehicle, this._id);
-        Session.set(Constants.Vehicle.Edit, this);
+        SessionHelper.setEditVehicle(this);
+    },
+    'click .viewLogVehicle': function(event, template) {
+        app.navigateTo(allMenuItems.viewLogVehicle, this._id);
+        SessionHelper.setEditVehicle(this);
     }
 });
 
@@ -103,57 +107,3 @@ Template.vehicle.actionClassName = function() {
 Template.vehicle.isAdmin = function() {
     return Helpers.isCurrentUserAdminUser();
 };
-
-
-Template.logVehicle.rendered = function() {
-    Helpers.toDatePicker($(".when"));
-};
-
-Template.logVehicle.vehicle_id = function() {
-  return Session.get(Constants.Vehicle.Edit)._id;
-};
-
-Template.logVehicle.user_id = function() {
-  return Meteor.userId();
-};
-
-Template.logVehicle.user_email = function() {
-  return Meteor.user()? Meteor.user().emails[0].address : "";
-};
-
-Template.logVehicle.isAdmin = function() {
-    return Helpers.isCurrentUserAdminUser();
-};
-
-Template.logVehicle.users = function() {
-    return Helpers.toUsersMap();
-};
-
-Template.logVehicle.error = function() {
-    return Session.get(Constants.Error.LogVehicleError);
-
-};
-
-Template.logVehicle.events({
-    'click .save': function(event, template) {
-        var vehicle_log = {};
-        vehicle_log.vehicle_id = template.find(".vehicle_id").value;
-        vehicle_log.entered_by_user_id = Meteor.userId();
-        vehicle_log.user_id = template.find(".user_id").value;
-        vehicle_log.when = template.find(".when").value;
-        vehicle_log.reading = template.find(".reading").value;
-        vehicle_log.comments = template.find(".comments").value;
-
-        if(vehicle_log.user_id.length && vehicle_log.when && vehicle_log.reading.length) {
-            Meteor.call('saveVehicleLog', vehicle_log, function(error, vehicle_log) {
-                if(!error) {
-                    app.navigateTo(allMenuItems.listVehicles);
-                    return;
-                }
-                Session.set(Constants.Error.LogVehicleError, error.message);
-            });
-            return;
-        }
-        Session.set(Constants.Error.LogVehicleError, "Please fill in all the required (*) fields");
-    }
-});

@@ -1,0 +1,22 @@
+<template name="viewLogVehicle">
+    {{#if hasLogs}}
+    <div class="entity-view">
+        <ul class="entity-list">
+            {{#each logs}}
+                {{> log}}
+            {{/each}}
+        </ul>
+    </div>
+    {{else}}
+        <div class="alert alert-error">No Logs available for this vehicle!</div>
+    {{/if}}
+</template>
+
+<template name="log">
+    <li class="entity">
+        <div class="display">
+            <div class="entity-text">{{driver_name}} - {{when_date}} - {{reading}}
+            </div>
+        </div>
+    </li>
+</template>

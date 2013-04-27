@@ -3,11 +3,11 @@ Template.addEditDriver.rendered = function() {
 };
 
 Template.addEditDriver.error = function() {
-    return Session.get(Constants.Error.AddEditDriverError);
+    return SessionHelper.getAddEditDriverError();
 };
 
 Template.addEditDriver.driver = function() {
-    return Session.get(Constants.EditDriver);
+    return SessionHelper.getEditDriver();
 };
 
 Template.addEditDriver.vehicles = function() {
@@ -53,14 +53,14 @@ Template.addEditDriver.events({
                     app.navigateTo(allMenuItems.listDrivers);
                     return;
                 }
-                Session.set(Constants.Error.AddEditDriverError, error.message);
+                SessionHelper.setAddEditDriverError(error.message);
             });
             return;
         }
-        Session.set(Constants.Error.AddEditDriverError, "Please fill in all the required (*) fields");
+        SessionHelper.setAddEditDriverError("Please fill in all the required (*) fields");
     },
     'change .input_field': function(event, template) {
-        Session.set(Constants.Error.AddEditDriverError, null);
+        SessionHelper.setAddEditDriverError(null);
     }
 });
 
@@ -75,7 +75,7 @@ Template.listDrivers.drivers = function() {
 Template.listDrivers.events({
     'click .entity': function(event, template) {
         app.navigateTo(allMenuItems.editDriver, this._id);
-        Session.set(Constants.EditDriver, this);
+        SessionHelper.setEditDriver(this);
     }
 });
 

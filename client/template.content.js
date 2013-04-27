@@ -21,6 +21,10 @@ Template.content.isLogVehicle = function() {
     return Helpers.isOperationMatching(Operations.LogVehicle);
 };
 
+Template.content.isViewLogVehicle = function() {
+    return Helpers.isOperationMatching(Operations.ViewLogVehicle);
+};
+
 Template.content.isListVehicles = function() {
     return Helpers.isOperationMatching(Operations.ListVehicles);
 };

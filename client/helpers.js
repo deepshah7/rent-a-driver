@@ -6,6 +6,70 @@
  * To change this template use File | Settings | File Templates.
  */
 allMenuItems = {};
+
+SessionHelper = {
+    getEditVehicle: function() {
+        return Session.get(Constants.Vehicle.Edit);
+    },
+
+    setEditVehicle: function(vehicle) {
+        Session.set(Constants.Vehicle.Edit, vehicle);
+    },
+
+    getEditDriver: function() {
+        return Session.get(Constants.Driver.Edit);
+    },
+
+    setEditDriver: function(vehicle) {
+        Session.set(Constants.Driver.Edit, vehicle);
+    },
+
+    getSelectedBrand: function() {
+        return Session.get(Constants.Vehicle.SelectedBrand);
+    },
+
+    setSelectedBrand: function(brand_id) {
+        Session.set(Constants.Vehicle.SelectedBrand, brand_id);
+    },
+
+    getAddEditVehicleError: function() {
+        return Session.get(Constants.Error.AddEditVehicleError);
+    },
+
+    setAddEditVehicleError: function(error) {
+        Session.set(Constants.Error.AddEditVehicleError, error);
+    },
+
+    getAddEditDriverError: function() {
+        return Session.get(Constants.Error.AddEditDriverError);
+    },
+
+    setAddEditDriverError: function(error) {
+        Session.set(Constants.Error.AddEditDriverError, error);
+    },
+
+    getLogVehicleError: function() {
+        return Session.get(Constants.Error.LogVehicleError);
+    },
+
+    setLogVehicleError: function(error) {
+        Session.set(Constants.Error.LogVehicleError, error);
+    },
+
+    isOperationMatching: function(operation) {
+        return Session.equals(Constants.Operation, operation.name);
+    },
+
+    isSelectedItem: function(item) {
+        return Session.equals(Constants.ParentOperation, item.operation.parent);
+    },
+
+    setOperation: function(operation) {
+        Session.set(Constants.Operation, operation.name);
+        Session.set(Constants.ParentOperation, operation.parent);
+    }
+};
+
 Helpers = {
     createMenuItem: function(url, text, cssClass, operation, subMenus) {
         return {
@@ -33,7 +97,8 @@ Helpers = {
             allMenuItems.addDriver
         ])
         allMenuItems.editVehicle = this.createMenuItem("/vehicles/edit/", "Edit Vehicle", "editVehicle", Operations.EditVehicle);
-        allMenuItems.logVehicle = this.createMenuItem("/vehicles/log/", "Log Vehicle", "logVehicle", Operations.LogVehicle);
+        allMenuItems.logVehicle = this.createMenuItem("/vehicles/logs/add/", "Log Vehicle", "logVehicle", Operations.LogVehicle);
+        allMenuItems.viewLogVehicle = this.createMenuItem("/vehicles/logs/", "View Log", "viewLogVehicle", Operations.ViewLogVehicle);
         allMenuItems.editDriver = this.createMenuItem("/drivers/edit/", "Edit Driver", "editDriver", Operations.EditDriver);
     },
 
@@ -66,7 +131,7 @@ Helpers = {
     },
 
     isOperationMatching: function(operation) {
-        return Session.equals(Constants.Operation, operation.name);
+        return SessionHelper.isOperationMatching(operation);
     },
 
     addAdminMenuItems: function(items) {
@@ -81,7 +146,7 @@ Helpers = {
     },
 
     isSelectedItem: function(item) {
-        return Session.equals(Constants.ParentOperation, item.operation.parent);
+        return SessionHelper.isSelectedItem(item);
     },
 
     toUsersMap: function() {
@@ -108,6 +173,10 @@ Helpers = {
         var currentDate = $(element).val();
         if(!currentDate) return;
 
-        $(element).val(new Date(currentDate).format(Constants.Application.DefaultDateFormat));
+        $(element).val(this.formatDateValue(new Date(currentDate)));
+    },
+
+    formatDateValue: function(date) {
+        return date.format(Constants.Application.DefaultDateFormat);
     }
 };
