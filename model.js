@@ -46,6 +46,7 @@ Validator = {
         if (! (typeof vehicle.brand_id === "string" && vehicle.brand_id.length &&
             typeof vehicle.model_id === "string" && vehicle.model_id.length &&
             typeof vehicle.regNumber === "string" && vehicle.regNumber.length &&
+            typeof vehicle.ratePerKM === "string" && vehicle.ratePerKM.length &&
             typeof vehicle.policyNumber === "string" && vehicle.policyNumber.length &&
             typeof vehicle.policyFrom === "string" && vehicle.policyFrom.length &&
             typeof vehicle.policyTo === "string" && vehicle.policyTo.length
@@ -53,6 +54,7 @@ Validator = {
             return new Meteor.Error(400, "Required parameter missing");
         if (! Meteor.userId())
             return new Meteor.Error(403, "You must be logged in");
+        vehicle.ratePerKM = parseFloat(vehicle.ratePerKM);
         vehicle.policyFrom = new Date(vehicle.policyFrom);
         vehicle.policyTo = new Date(vehicle.policyTo);
         return null;
@@ -94,6 +96,7 @@ Meteor.methods({
           return Vehicles.insert({
               owner: this.userId,
               regNumber: vehicle.regNumber.toUpperCase(),
+              ratePerKM: vehicle.ratePerKM,
               brand_id: vehicle.brand_id,
               model_id: vehicle.model_id,
               insurance: {
@@ -107,6 +110,7 @@ Meteor.methods({
       }
       return Vehicles.update(vehicle._id, {$set: {
           regNumber: vehicle.regNumber.toUpperCase(),
+          ratePerKM: vehicle.ratePerKM,
           brand_id: vehicle.brand_id,
           model_id: vehicle.model_id,
           insurance: {

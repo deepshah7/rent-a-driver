@@ -35,6 +35,7 @@ Template.addEditVehicle.events({
         vehicle.brand_id = template.find(".brand_id").value;
         vehicle.model_id = template.find(".model_id").value;
         vehicle.regNumber = template.find(".regNumber").value;
+        vehicle.ratePerKM = template.find(".ratePerKM").value;
         vehicle.policyNumber = template.find(".policyNumber").value;
         vehicle.policyFrom = template.find(".policyFrom").value;
         vehicle.policyTo = template.find(".policyTo").value;
@@ -43,6 +44,7 @@ Template.addEditVehicle.events({
         if(vehicle.brand_id.length
             && vehicle.model_id.length
             && vehicle.regNumber.length
+            && vehicle.ratePerKM.length
             && vehicle.policyNumber.length
             && vehicle.policyFrom.length
             && vehicle.policyTo.length
