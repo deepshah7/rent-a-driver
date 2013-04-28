@@ -5,126 +5,84 @@
  * Time: 3:05 PM
  * To change this template use File | Settings | File Templates.
  */
-var Router = Backbone.Router.extend({
-    routes: {
-        "":                                     "main",
-        "vehicles/add":                          "addVehicle",
-        "vehicles/edit/:vehicleId":              "editVehicle",
-        "vehicles/logs/add/:vehicleId":              "logVehicle",
-        "vehicles/logs/:vehicleId":              "viewLogVehicle",
-        "vehicles":                              "listVehicle",
-        "drivers/add":                           "addDriver",
-        "drivers/edit/:driverId":                "editDriver",
-        "drivers":                               "listDriver"
-    },
 
-    main: function() {
-        this.updateSessionVariables(Operations.Home);
-    },
-
-    addVehicle: function() {
-        if(!Helpers.isCurrentUserAdminUser()) {
-            this.navigateTo(allMenuItems.Home);
-            return;
-        }
+Meteor.Router.add({
+    '/': 'main',
+    '/vehicles/add': {as: 'addVehicle', to:'addEditVehicle', and: function() {
         SessionHelper.setEditVehicle(null);
         SessionHelper.setSelectedBrand(null);
         SessionHelper.setAddEditVehicleError(null);
-        this.updateSessionVariables(Operations.AddVehicle);
-    },
-
-    editVehicle: function(vehicleId) {
-        if(!Helpers.isCurrentUserAdminUser()) {
-            this.navigateTo(allMenuItems.Home);
-            return;
-        }
+        SessionHelper.setOperation(Operations.AddVehicle);
+        Helpers.initializeMenu();
+    }},
+    '/vehicles/edit/:vehicleId': {as: 'editVehicle', to: function(vehicleId) {
         var vehicle = Vehicles.findOne({_id: vehicleId});
         if(!vehicle) {
-            this.navigateTo(allMenuItems.listVehicles);
-            return;
+            return 'main';
         }
-        this.updateSessionVariables(Operations.EditVehicle);
         SessionHelper.setEditVehicle(vehicle);
         SessionHelper.setSelectedBrand(vehicle.brand_id);
         SessionHelper.setAddEditVehicleError(null);
-    },
-
-    logVehicle: function(vehicleId) {
-        if(!Helpers.isUserLoggedIn()) {
-            this.navigateTo(allMenuItems.Home);
-            return;
-        }
+        SessionHelper.setOperation(Operations.EditVehicle);
+        Helpers.initializeMenu();
+        return 'addEditVehicle';
+    }},
+    '/vehicles/logs/add/:vehicleId': {as: 'logVehicle', to: function(vehicleId) {
         var vehicle = Vehicles.findOne({_id: vehicleId});
         if(!vehicle) {
-            this.navigateTo(allMenuItems.listVehicles);
-            return;
+            return 'main';
         }
-        this.updateSessionVariables(Operations.LogVehicle);
         SessionHelper.setLogVehicleError(null);
         SessionHelper.setEditVehicle(vehicle);
-    },
-
-    viewLogVehicle: function(vehicleId) {
-        if(!Helpers.isCurrentUserAdminUser()) {
-            this.navigateTo(allMenuItems.Home);
-            return;
-        }
+        SessionHelper.setOperation(Operations.LogVehicle);
+        Helpers.initializeMenu();
+        return 'logVehicle'
+    }},
+    '/vehicles/logs/:vehicleId': {as: 'listLogs', to: function(vehicleId) {
         var vehicle = Vehicles.findOne({_id: vehicleId});
         if(!vehicle) {
-            this.navigateTo(allMenuItems.listVehicles);
-            return;
+            return 'main';
         }
-        this.updateSessionVariables(Operations.ViewLogVehicle);
         SessionHelper.setEditVehicle(vehicle);
-    },
-
-    listVehicle: function() {
-        if(!Helpers.isUserLoggedIn()) {
-            this.navigateTo(allMenuItems.Home);
-            return;
-        }
-        this.updateSessionVariables(Operations.ListVehicles);
-    },
-
-    addDriver: function() {
-        if(!Helpers.isCurrentUserAdminUser()) {
-            this.navigateTo(allMenuItems.Home);
-            return;
-        }
-        SessionHelper.setAddEditDriverError(null);
-        this.updateSessionVariables(Operations.AddDriver);
-    },
-
-    editDriver: function(driverId) {
-        if(!Helpers.isCurrentUserAdminUser()) {
-            this.navigateTo(allMenuItems.Home);
-            return;
-        }
-        SessionHelper.setAddEditDriverError(null);
-        this.updateSessionVariables(Operations.EditDriver);
-    },
-
-    listDriver: function() {
-        if(!Helpers.isCurrentUserAdminUser()) {
-            this.navigateTo(allMenuItems.Home);
-            return;
-        }
-        this.updateSessionVariables(Operations.ListDrivers);
-    },
-
-    navigateTo: function(menuItem, identifier) {
-        if(!menuItem) {
-            this.navigate("/", true);
-            return;
-        }
-        var appendUrl = identifier? identifier : "";
-        this.navigate(menuItem.url + appendUrl, true);
-    },
-
-    updateSessionVariables: function(operation) {
-        SessionHelper.setOperation(operation);
+        SessionHelper.setOperation(Operations.listLog);
         Helpers.initializeMenu();
+        return 'listLog';
+    }},
+    '/vehicles': {as: 'listVehicles', to: 'listVehicles', and: function() {
+        SessionHelper.setOperation(Operations.ListVehicles);
+    }},
+    '/drivers/add': {as: 'addDriver', to: 'addEditDriver', and: function() {
+        SessionHelper.setEditDriver(null);
+        SessionHelper.setAddEditDriverError(null);
+        SessionHelper.setOperation(Operations.AddDriver);
+        Helpers.initializeMenu();
+    }},
+    '/drivers/edit/:driverId': {as: 'editDriver', to: function(driverId){
+        var driver = Drivers.findOne({_id: driverId});
+        if(!driver) {
+            return 'main';
+        }
+        SessionHelper.setEditDriver(driver);
+        SessionHelper.setAddEditDriverError(null);
+        SessionHelper.setOperation(Operations.EditDriver);
+        Helpers.initializeMenu();
+        return 'addEditDriver';
+    }},
+    '/drivers': {as: 'listDrivers', to: 'listDrivers', and: function() {
+        SessionHelper.setOperation(Operations.ListDrivers);
+        Helpers.initializeMenu();
+    } }
+});
+
+
+Meteor.Router.filters({
+    requireLogin: function(page) {
+        return Meteor.userId() ? page: 'main';
+    },
+    requireAdmin: function(page) {
+        return Helpers.isCurrentUserAdminUser()? page : "main";
     }
 });
 
-app = new Router;
+Meteor.Router.filter('requireLogin', {except: 'main'});
+Meteor.Router.filter('requireAdmin', {only: ['addEditVehicle', 'listLogs', 'addEditDriver', 'listDrivers']});

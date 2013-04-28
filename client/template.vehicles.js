@@ -49,7 +49,7 @@ Template.addEditVehicle.events({
             ) {
             Meteor.call('saveVehicle', vehicle, function(error, vehicle) {
                 if(!error) {
-                    app.navigateTo(allMenuItems.listVehicles);
+                    Meteor.Router.to('listVehicles');
                     return;
                 }
                 SessionHelper.setAddEditDriverError(error.message);
@@ -76,16 +76,13 @@ Template.listVehicles.vehicles = function() {
 
 Template.listVehicles.events({
     'click .editVehicle': function(event, template) {
-        app.navigateTo(allMenuItems.editVehicle, this._id);
-        SessionHelper.setEditVehicle(this);
+        Meteor.Router.to('editVehicle', this._id);
     },
     'click .logVehicle': function(event, template) {
-        app.navigateTo(allMenuItems.logVehicle, this._id);
-        SessionHelper.setEditVehicle(this);
+        Meteor.Router.to('logVehicle', this._id);
     },
-    'click .viewLogVehicle': function(event, template) {
-        app.navigateTo(allMenuItems.viewLogVehicle, this._id);
-        SessionHelper.setEditVehicle(this);
+    'click .listLog': function(event, template) {
+        Meteor.Router.to('listLogs', this._id);
     }
 });
 

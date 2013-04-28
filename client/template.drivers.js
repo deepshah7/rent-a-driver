@@ -50,7 +50,7 @@ Template.addEditDriver.events({
             && driver.vehicle_id.length) {
             Meteor.call('saveDriver', driver, function(error, driver) {
                 if(!error) {
-                    app.navigateTo(allMenuItems.listDrivers);
+                    Meteor.Router.to("listDrivers");
                     return;
                 }
                 SessionHelper.setAddEditDriverError(error.message);
@@ -74,8 +74,7 @@ Template.listDrivers.drivers = function() {
 
 Template.listDrivers.events({
     'click .entity': function(event, template) {
-        app.navigateTo(allMenuItems.editDriver, this._id);
-        SessionHelper.setEditDriver(this);
+        Meteor.Router.to("editDriver", this._id);
     }
 });
 

@@ -65,7 +65,6 @@ SessionHelper = {
     },
 
     setOperation: function(operation) {
-        Session.set(Constants.Operation, operation.name);
         Session.set(Constants.ParentOperation, operation.parent);
     }
 };
@@ -98,7 +97,7 @@ Helpers = {
         ])
         allMenuItems.editVehicle = this.createMenuItem("/vehicles/edit/", "Edit Vehicle", "editVehicle", Operations.EditVehicle);
         allMenuItems.logVehicle = this.createMenuItem("/vehicles/logs/add/", "Log Vehicle", "logVehicle", Operations.LogVehicle);
-        allMenuItems.viewLogVehicle = this.createMenuItem("/vehicles/logs/", "View Log", "viewLogVehicle", Operations.ViewLogVehicle);
+        allMenuItems.listLog = this.createMenuItem("/vehicles/logs/", "View Log", "listLog", Operations.listLog);
         allMenuItems.editDriver = this.createMenuItem("/drivers/edit/", "Edit Driver", "editDriver", Operations.EditDriver);
     },
 

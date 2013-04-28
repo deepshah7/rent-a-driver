@@ -47,7 +47,7 @@ Template.logVehicle.events({
         if(vehicle_log.user_id.length && vehicle_log.when && vehicle_log.reading.length) {
             Meteor.call('saveVehicleLog', vehicle_log, function(error, vehicle_log) {
                 if(!error) {
-                    app.navigateTo(allMenuItems.listVehicles);
+                    Meteor.Router.to('listVehicles');
                     return;
                 }
                 SessionHelper.setLogVehicleError(error.message);
@@ -58,7 +58,7 @@ Template.logVehicle.events({
     }
 });
 
-Template.viewLogVehicle.helpers({
+Template.listLog.helpers({
     hasLogs: function() {
         return VehicleLogs.find({vehicle_id: SessionHelper.getEditVehicle()._id}).count() > 0;
     },

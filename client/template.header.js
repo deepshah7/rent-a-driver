@@ -28,7 +28,7 @@ Template.header.menuItems = function() {
 
 Template.menu_item.events({
     'click a': function(event, template) {
-        app.navigateTo(this);
+        Meteor.Router.to(this.url);
         event.preventDefault();
     }
 })
